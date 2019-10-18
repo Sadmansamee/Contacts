@@ -21,24 +21,19 @@ class HomeVMTests: QuickSpec {
         describe("HomeVMTests") {
 
             var stubbingProvider: MoyaProvider<HomeService>!
-            var vm: HomeVM!
+            var sut: HomeVM!
 
             beforeEach {
 
-                let tokenClosure: () -> String = {
-                    return "84bf8bcc4c2286a201b9a8ceca18f5dcb3295e5d22dcee805488eca63ef01b53"
-                }
-
-                stubbingProvider = MoyaProvider<HomeService>(stubClosure: MoyaProvider.immediatelyStub, plugins: [AccessTokenPlugin(tokenClosure: tokenClosure)])
-                vm = HomeVM(homeProvider: stubbingProvider)
-                vm.fetchContactss()
+                stubbingProvider = MoyaProvider<HomeService>(stubClosure: MoyaProvider.immediatelyStub)
+                sut = HomeVM(homeProvider: stubbingProvider)
+                sut.fetchContactss()
             }
             context("when initialized and data count is 10") {
                 it("should load Contactss") {
-                    let surveys = try! vm.cells.toBlocking().first()
-                    expect(surveys?.count) == 10
-                    expect(surveys?.count).toEventually(beGreaterThanOrEqualTo(10), timeout: 5)
-                    expect(surveys?.first?.0.titleVM).to(equal("Scarlett Bangkok"))
+                    let items = try! sut.cells.toBlocking().first()
+                    expect(items?.count) == 10
+                    expect(items?.count).toEventually(beGreaterThanOrEqualTo(10), timeout: 5)
                 }
 
             }

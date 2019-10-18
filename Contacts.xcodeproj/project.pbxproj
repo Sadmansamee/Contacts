@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1A3D3A6823531DA7007C658B /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3D3A6723531DA7007C658B /* TokenService.swift */; };
 		1A89B39A23559D2C0001C7E5 /* Extension+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B39923559D2C0001C7E5 /* Extension+View.swift */; };
-		1A89B3D12355BA290001C7E5 /* ContactsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C42355BA290001C7E5 /* ContactsTest.swift */; };
+		1A89B3D12355BA290001C7E5 /* ContactTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C42355BA290001C7E5 /* ContactTest.swift */; };
 		1A89B3D22355BA290001C7E5 /* HomeVMTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C62355BA290001C7E5 /* HomeVMTest.swift */; };
 		1A89B3D32355BA290001C7E5 /* ViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C82355BA290001C7E5 /* ViewControllerTest.swift */; };
 		1A89B3D42355BA290001C7E5 /* ViewControllerTests+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C92355BA290001C7E5 /* ViewControllerTests+Setup.swift */; };
@@ -61,11 +60,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1A3D3A6723531DA7007C658B /* TokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenService.swift; sourceTree = "<group>"; };
 		1A89B39923559D2C0001C7E5 /* Extension+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+View.swift"; sourceTree = "<group>"; };
 		1A89B3A12355B9200001C7E5 /* ContactsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A89B3A52355B9200001C7E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1A89B3C42355BA290001C7E5 /* ContactsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTest.swift; sourceTree = "<group>"; };
+		1A89B3C42355BA290001C7E5 /* ContactTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTest.swift; sourceTree = "<group>"; };
 		1A89B3C62355BA290001C7E5 /* HomeVMTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeVMTest.swift; sourceTree = "<group>"; };
 		1A89B3C82355BA290001C7E5 /* ViewControllerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerTest.swift; sourceTree = "<group>"; };
 		1A89B3C92355BA290001C7E5 /* ViewControllerTests+Setup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewControllerTests+Setup.swift"; sourceTree = "<group>"; };
@@ -160,7 +158,7 @@
 		1A89B3C32355BA290001C7E5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				1A89B3C42355BA290001C7E5 /* ContactsTest.swift */,
+				1A89B3C42355BA290001C7E5 /* ContactTest.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -342,7 +340,6 @@
 			isa = PBXGroup;
 			children = (
 				1ADC8570234DC5CD0019AC62 /* AlertMessage.swift */,
-				1A3D3A6723531DA7007C658B /* TokenService.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -559,7 +556,7 @@
 			files = (
 				1A89B3D62355BA290001C7E5 /* Matchers.swift in Sources */,
 				1A89B3D82355BA290001C7E5 /* LeakTest.swift in Sources */,
-				1A89B3D12355BA290001C7E5 /* ContactsTest.swift in Sources */,
+				1A89B3D12355BA290001C7E5 /* ContactTest.swift in Sources */,
 				1A89B3D32355BA290001C7E5 /* ViewControllerTest.swift in Sources */,
 				1A89B3D72355BA290001C7E5 /* LeaksAnalyzer.swift in Sources */,
 				1A89B3DA2355BA290001C7E5 /* Expectation+Leaks.swift in Sources */,
@@ -591,7 +588,6 @@
 				1ADC8566234D9E100019AC62 /* K+Storyboard.swift in Sources */,
 				1ADC8579234DCAF80019AC62 /* Extension+Cell.swift in Sources */,
 				1ADC851D234C58650019AC62 /* AppDelegate.swift in Sources */,
-				1A3D3A6823531DA7007C658B /* TokenService.swift in Sources */,
 				1ADC857D234DCE2F0019AC62 /* ContactDetailVC.swift in Sources */,
 				1ADC856E234DBD8D0019AC62 /* HomeVM.swift in Sources */,
 				1ADC8568234D9FFC0019AC62 /* K+Url.swift in Sources */,

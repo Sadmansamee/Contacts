@@ -12,7 +12,7 @@ public enum HomeService {
     case contacts
 }
 
-extension HomeService: TargetType, AccessTokenAuthorizable {
+extension HomeService: TargetType {
     public var baseURL: URL {
         URL(string: K.Url.base)!
     }
@@ -33,7 +33,7 @@ extension HomeService: TargetType, AccessTokenAuthorizable {
 
     public var task: Task {
         switch self {
-        case  .contacts:
+        case .contacts:
             return .requestPlain
         }
     }
@@ -48,7 +48,7 @@ extension HomeService: TargetType, AccessTokenAuthorizable {
     public var authorizationType: AuthorizationType {
         switch self {
         case .contacts:
-            return .bearer
+            return .none
         }
     }
 

@@ -8,11 +8,9 @@
 
 import UIKit
 
-extension UITableViewCell: XIBIdentifiable {
-}
+extension UITableViewCell: XIBIdentifiable {}
 
-extension UICollectionViewCell: XIBIdentifiable {
-}
+extension UICollectionViewCell: XIBIdentifiable {}
 
 protocol XIBIdentifiable {
     static var id: String { get }

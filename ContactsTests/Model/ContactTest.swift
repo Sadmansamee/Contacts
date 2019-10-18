@@ -16,7 +16,7 @@ import SwiftyJSON
 
 @testable import Contacts
 
-class ContactsTest: QuickSpec {
+class ContactTest: QuickSpec {
     override func spec() {
         describe("ContactsTest") {
             var json: JSON!
@@ -28,14 +28,14 @@ class ContactsTest: QuickSpec {
                 }
             }
             context("Model From Json") {
-                var survey: Contacts!
+                var sut: Contacts!
                 beforeEach {
-                    survey = Contacts(fromJson: json)
+                    sut = Contacts(fromJson: json)
                 }
 
                 it("Data is valid") {
-                    expect(survey).toNot(beNil())
-                    expect(survey?.title).toNot(beNil())
+                    expect(sut).toNot(beNil())
+                    expect(sut?.title).toNot(beNil())
                 }
             }
         }

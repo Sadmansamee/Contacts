@@ -40,6 +40,5 @@ class BaseCoordinator: Coordinator {
 
     // MARK: - Coordinator
 
-    func start() {
-    }
+    func start() {}
 }

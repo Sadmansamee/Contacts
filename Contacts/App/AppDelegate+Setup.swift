@@ -17,14 +17,8 @@ extension AppDelegate {
     internal func setupDependencies() {
         // MARK: - Providers
 
-        let tokenService = TokenService()
-
-        let tokenClosure: () -> String = {
-            tokenService.getAcessToken()
-        }
-
         container.register(MoyaProvider<HomeService>.self, factory: { _ in
-            MoyaProvider<HomeService>(plugins: [AccessTokenPlugin(tokenClosure: tokenClosure)])
+            MoyaProvider<HomeService>()
         }).inObjectScope(ObjectScope.container)
 
         // MARK: - View Model
@@ -33,10 +27,8 @@ extension AppDelegate {
             HomeVM(homeProvider: container.resolve(MoyaProvider<HomeService>.self)!)
         }).inObjectScope(ObjectScope.container)
 
-       
         // MARK: - View Controllers
 
-       
         container.storyboardInitCompleted(HomeVC.self) { r, c in
             c.viewModel = r.resolve(HomeVM.self)
         }

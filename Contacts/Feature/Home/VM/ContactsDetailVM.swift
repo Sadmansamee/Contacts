@@ -23,7 +23,7 @@ final class ContactsDetailVM {
 
     var onShowingLoading: Observable<Bool> {
         _isLoading.asObservable()
-                .distinctUntilChanged()
+            .distinctUntilChanged()
     }
 
     var onShowAlert: Observable<AlertMessage> {

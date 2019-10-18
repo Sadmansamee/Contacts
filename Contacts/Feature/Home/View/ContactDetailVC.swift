@@ -16,8 +16,8 @@ protocol ContactDetailVCProtocol: AnyObject {
 }
 
 class ContactDetailVC: UIViewController, HomeStoryboardLoadable, ContactDetailVCProtocol {
-    
     // MARK: - Properties
+
     var viewModel: ContactsDetailVM!
     var onBack: (() -> Void)?
     private var disposeBag = DisposeBag()
@@ -30,19 +30,17 @@ class ContactDetailVC: UIViewController, HomeStoryboardLoadable, ContactDetailVC
     }
 
     // MARK: - Private functions
+
     private func bindViewModel() {
-
         viewModel.onShowAlert
-                .map { [weak self] in
-                    self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
-                }.subscribe()
-                .disposed(by: disposeBag)
+            .map { [weak self] in
+                self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
+            }.subscribe()
+            .disposed(by: disposeBag)
     }
 
-    private func setUI() {
-        
-    }
-    
+    private func setUI() {}
+
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))

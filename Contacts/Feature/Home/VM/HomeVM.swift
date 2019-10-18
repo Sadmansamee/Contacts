@@ -18,11 +18,10 @@ final class HomeVM {
 
     private let _alertMessage = PublishSubject<AlertMessage>()
     private let _cells = BehaviorRelay<[ContactViewModel]>(value: [])
-   
 
     var onShowingLoading: Observable<Bool> {
         _isLoading.asObservable()
-                .distinctUntilChanged()
+            .distinctUntilChanged()
     }
 
     var onShowAlert: Observable<AlertMessage> {
@@ -33,15 +32,11 @@ final class HomeVM {
         _cells.asObservable()
     }
 
-   
     init(homeProvider: MoyaProvider<HomeService>) {
         self.homeProvider = homeProvider
     }
 
-  
-    func fetchContactss(isRefresh: Bool = false, isLoadingMore: Bool = false) {
-
-    
+    func fetchContactss(isRefresh _: Bool = false, isLoadingMore _: Bool = false) {
         _isLoading.accept(true)
 
         homeProvider.request(.contacts, completion: { result in
@@ -50,7 +45,6 @@ final class HomeVM {
 
             if case let .success(response) = result {
                 do {
-
                     let filteredResponse = try response.filterSuccessfulStatusCodes()
 
                     let json = JSON(filteredResponse.data)
@@ -58,7 +52,7 @@ final class HomeVM {
                     let items = json.arrayValue.compactMap {
                         Contact(fromJson: $0)
                     }
-                
+
                     let data = self._cells.value + items
 
                     self._cells.accept(data)

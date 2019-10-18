@@ -18,14 +18,8 @@ extension ViewControllerTest {
     func setupDependencies() -> Container {
         let container = Container()
 
-
-        let tokenClosure: () -> String = {
-            return "84bf8bcc4c2286a201b9a8ceca18f5dcb3295e5d22dcee805488eca63ef01b53"
-        }
-
-
         container.register(MoyaProvider<HomeService>.self, factory: { _ in
-            MoyaProvider<HomeService>(stubClosure: MoyaProvider.immediatelyStub, plugins: [AccessTokenPlugin(tokenClosure: tokenClosure)])
+            MoyaProvider<HomeService>()
         }).inObjectScope(ObjectScope.container)
 
         // MARK: - View Model
@@ -35,13 +29,10 @@ extension ViewControllerTest {
             HomeVM(homeProvider: container.resolve(MoyaProvider<HomeService>.self)!)
         }).inObjectScope(ObjectScope.container)
 
-        
         // MARK: - View Controllers
-
         container.storyboardInitCompleted(HomeVC.self) { r, c in
             c.viewModel = r.resolve(HomeVM.self)
         }
-
 
         return container
     }

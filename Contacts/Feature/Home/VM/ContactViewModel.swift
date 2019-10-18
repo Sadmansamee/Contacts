@@ -10,12 +10,10 @@ import Foundation
 
 protocol ContactViewModel {
     var contactVM: Contact { get }
-  
 }
 
 extension Contact: ContactViewModel {
     var contactVM: Contact {
         self
     }
-
 }

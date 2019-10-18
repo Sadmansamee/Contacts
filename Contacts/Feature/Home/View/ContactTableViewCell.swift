@@ -29,8 +29,6 @@ class ContactTableViewCell: UITableViewCell {
     }
 
     private func bindViewModel() {
-        if let vm = viewModel {
-           
-        }
+        if let vm = viewModel {}
     }
 }

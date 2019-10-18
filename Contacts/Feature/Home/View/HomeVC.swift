@@ -19,8 +19,7 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
     var viewModel: HomeVM!
     private var disposeBag = DisposeBag()
 
-
-    @IBOutlet var loadingView: UIActivityIndicatorView!
+    var loadingView: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,11 +34,10 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
     // MARK: - Private functions
 
     private func setUI() {
-
         title = "SURVEYS"
 
         let attributes = [NSAttributedString.Key.font: UIFont(name: "Avenir", size: 20)!]
-        self.navigationController?.navigationBar.titleTextAttributes = attributes
+        navigationController?.navigationBar.titleTextAttributes = attributes
     }
 
     private func bindViewModel() {
@@ -47,29 +45,26 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
 
         // show initial loading view
         viewModel.onShowingLoading
-                .map { [weak self] isLoading in
-                    if isLoading {
-                        self?.loadingView.startAnimating()
-                    } else {
-                        self?.loadingView.stopAnimating()
-                    }
+            .map { [weak self] isLoading in
+                if isLoading {
+                    self?.loadingView.startAnimating()
+                } else {
+                    self?.loadingView.stopAnimating()
                 }
-                .subscribe()
-                .disposed(by: disposeBag)
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
 
         //to show if there are any alert
         viewModel.onShowAlert
-                .map { [weak self] in
-                    self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
-                }
-                .subscribe()
-                .disposed(by: disposeBag)
-
-
+            .map { [weak self] in
+                self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
     }
 
     private func setLoadingView() {
-        
         //        if #available(iOS 13.0, *) {
         //            loadingView = UIActivityIndicatorView(style: .large)
         //        } else {
@@ -92,7 +87,6 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
 
         present(alert, animated: true)
     }
-  
 }
 
 // MARK: - TableView
@@ -103,21 +97,20 @@ extension HomeVC {
     private func setTableViewModel() {
         // setting delegate
         tableView.rx.setDelegate(self)
-                .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
 
         // when cell is selected
         tableView.rx
-                .modelSelected((ContactViewModel, Bool).self)
-                .subscribe(
-                        onNext: { [weak self] vm in
-                            if let selectedRowIndexPath = self?.tableView.indexPathForSelectedRow {
-                                self?.tableView?.deselectRow(at: selectedRowIndexPath, animated: true)
-                                //self?.onContactSelected?(self.currentContacts)
-
-                            }
-                        }
-                )
-                .disposed(by: disposeBag)
+            .modelSelected((ContactViewModel, Bool).self)
+            .subscribe(
+                onNext: { [weak self] _ in
+                    if let selectedRowIndexPath = self?.tableView.indexPathForSelectedRow {
+                        self?.tableView?.deselectRow(at: selectedRowIndexPath, animated: true)
+                        // self?.onContactSelected?(self.currentContacts)
+                    }
+                }
+            )
+            .disposed(by: disposeBag)
 
         viewModel.cells.bind(to: tableView.rx.items) { tableView, _, element in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id) as? ContactTableViewCell else {
@@ -127,7 +120,7 @@ extension HomeVC {
             return cell
         }.disposed(by: disposeBag)
 
-        //For pagination
+        // For pagination
 //        tableView.rx.contentOffset
 //            .flatMap { [weak self] edge in
 //                self?.tableView.isNearBottomEdge(edgeOffset: 250.0) ?? false
@@ -140,7 +133,6 @@ extension HomeVC {
 //                print("edge \(edge.element)")
 //                self?.viewModel.fetchContactss(isLoadingMore: true)
 //        }.disposed(by: disposeBag)
-
     }
 
     private func setUpTableView() {
