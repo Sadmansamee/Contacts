@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c9fd8708-d22e-428a-8db2-4435ac60693f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/App/AppDelegate+Setup.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/App/AppDelegate+Setup.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/Feature/Auth/Service/AuthService.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/Feature/Auth/Service/AuthService.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/Feature/Auth/VM/AuthVM.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/Feature/Auth/VM/AuthVM.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/Feature/Home/Service/HomeCoordinator.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/Feature/Home/Service/HomeCoordinator.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/Feature/Home/Service/HomeService.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/Feature/Home/Service/HomeService.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/Feature/Home/VM/HomeVM.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/Feature/Home/VM/HomeVM.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/Feature/Home/View/HomeVC.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/Feature/Home/View/HomeVC.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/Shared/Constant/K+Storyboard.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/Shared/Constant/K+Storyboard.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contacts/Shared/MockData/Oauth.json" beforeDir="false" afterPath="$PROJECT_DIR$/Contacts/Shared/MockData/Oauth.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ContactsTests/ViewModel/AuthVMTest.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ContactsTests/ViewModel/AuthVMTest.swift" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_6316078ed7ed74114e1e5676a9239f37ad28714d" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1S17mzEwJFYDTITJYG4mvwPRfdK" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Contacts" type="AppleRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Contacts" TARGET_NAME="Contacts" CONFIG_NAME="Debug" SCHEME_NAME="Contacts" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" RUN_TARGET_PROJECT_NAME="Contacts" RUN_TARGET_NAME="Contacts" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <embedded_app_extension_list />
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c9fd8708-d22e-428a-8db2-4435ac60693f" name="Default Changelist" comment="" />
+      <created>1570719411184</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1570719411184</updated>
+      <workItem from="1570719417802" duration="1235000" />
+      <workItem from="1570730258763" duration="298000" />
+      <workItem from="1570888496466" duration="708000" />
+      <workItem from="1570905976538" duration="110000" />
+      <workItem from="1571129468356" duration="408000" />
+      <workItem from="1571130092551" duration="67000" />
+      <workItem from="1571133513421" duration="225000" />
+      <workItem from="1571148404402" duration="523000" />
+      <workItem from="1571197888358" duration="957000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
