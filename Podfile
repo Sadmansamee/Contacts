@@ -12,9 +12,10 @@ target 'Contacts' do
   pod 'SwiftyJSON'
   pod 'RxSwift', '~> 5'
   pod 'RxCocoa', '~> 5'
+  pod 'RxDataSources', '~> 4.0'
   pod 'Swinject' , '~> 2.7.1'
   pod 'SwinjectStoryboard', '~> 2.2.0'
-  
+
   target 'ContactsTests' do
     inherit! :search_paths
     # Pods for testing

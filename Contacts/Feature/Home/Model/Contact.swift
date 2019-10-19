@@ -4,7 +4,7 @@
 import Foundation
 import SwiftyJSON
 
-class Contact {
+struct Contact {
     var favorite: Bool!
     var firstName: String!
     var id: Int!

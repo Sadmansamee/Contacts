@@ -11,6 +11,7 @@ import RxCocoa
 import RxSwift
 import Swinject
 import UIKit
+import RxDataSources
 
 class HomeVC: UIViewController, HomeStoryboardLoadable {
     var onContactSelected: ((ContactViewModel) -> Void)?
@@ -20,6 +21,7 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
     private var disposeBag = DisposeBag()
 
     var loadingView: UIActivityIndicatorView!
+    var dataSource : RxTableViewSectionedReloadDataSource<ContactGroup>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,23 +30,19 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
         setLoadingView()
         setUpTableView()
         bindViewModel()
-        setTableViewModel()
     }
 
     // MARK: - Private functions
 
     private func setUI() {
-        title = "SURVEYS"
-
-        let attributes = [NSAttributedString.Key.font: UIFont(name: "Avenir", size: 20)!]
-        navigationController?.navigationBar.titleTextAttributes = attributes
+        title = "Contact"
     }
 
     private func bindViewModel() {
         viewModel.fetchContactss()
 
         // show initial loading view
-        viewModel.onShowingLoading
+        viewModel.isLoading
             .map { [weak self] isLoading in
                 if isLoading {
                     self?.loadingView.startAnimating()
@@ -56,7 +54,7 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
             .disposed(by: disposeBag)
 
         //to show if there are any alert
-        viewModel.onShowAlert
+        viewModel.alertMessage
             .map { [weak self] in
                 self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
             }
@@ -65,14 +63,14 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
     }
 
     private func setLoadingView() {
-        //        if #available(iOS 13.0, *) {
-        //            loadingView = UIActivityIndicatorView(style: .large)
-        //        } else {
-        //            // Fallback on earlier versions
-        //            loadingView = UIActivityIndicatorView(style: .gray)
-        //        }
+//                if #available(iOS 13.0, *) {
+//                    loadingView = UIActivityIndicatorView(style: .large)
+//                } else {
+//                    // Fallback on earlier versions
+//                    loadingView = UIActivityIndicatorView(style: .gray)
+//                }
 
-        loadingView = UIActivityIndicatorView(style: .white)
+        loadingView = UIActivityIndicatorView(style: .gray)
         loadingView.startAnimating()
         loadingView.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: view.bounds.width, height: CGFloat(70))
         loadingView.center = view.center
@@ -92,57 +90,92 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
 // MARK: - TableView
 
 extension HomeVC {
-    // MARK: - View Model TableView
-
-    private func setTableViewModel() {
-        // setting delegate
-        tableView.rx.setDelegate(self)
-            .disposed(by: disposeBag)
-
-        // when cell is selected
-        tableView.rx
-            .modelSelected((ContactViewModel, Bool).self)
-            .subscribe(
-                onNext: { [weak self] _ in
-                    if let selectedRowIndexPath = self?.tableView.indexPathForSelectedRow {
-                        self?.tableView?.deselectRow(at: selectedRowIndexPath, animated: true)
-                        // self?.onContactSelected?(self.currentContacts)
-                    }
-                }
-            )
-            .disposed(by: disposeBag)
-
-        viewModel.cells.bind(to: tableView.rx.items) { tableView, _, element in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id) as? ContactTableViewCell else {
-                return UITableViewCell()
-            }
-            cell.viewModel = element
-            return cell
-        }.disposed(by: disposeBag)
-
-        // For pagination
-//        tableView.rx.contentOffset
-//            .flatMap { [weak self] edge in
-//                self?.tableView.isNearBottomEdge(edgeOffset: 250.0) ?? false
-//                    ? Observable.just(())
-//                    : Observable.empty()
-//        }.asObservable()
-//            //.take(1)
-//            //.debounce(DispatchTimeInterval.seconds(1), scheduler: MainScheduler.instance)
-//            .subscribe { [weak self] edge in
-//                print("edge \(edge.element)")
-//                self?.viewModel.fetchContactss(isLoadingMore: true)
-//        }.disposed(by: disposeBag)
+    
+    fileprivate func configureDataSource() {
+        
     }
-
+    
+    // MARK: -  TableView
     private func setUpTableView() {
+        
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(ContactTableViewCell.nib, forCellReuseIdentifier: ContactTableViewCell.id)
+    
+      let  dataSource = RxTableViewSectionedReloadDataSource<ContactGroup>(
+            configureCell: {
+                [weak self] dataSource, tableView, indexPath, item in
+               guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id) as? ContactTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.viewModel = item
+                return cell
+            },
+            titleForHeaderInSection: { dataSource, index in
+               return dataSource.sectionModels[index].header
+        },sectionIndexTitles: { dataSource in
+            let titles =  dataSource.sectionModels.map { $0.header}
+            return titles
+        }, sectionForSectionIndexTitle: { source, title, index in
+            index }
+        )
+        
+        self.dataSource = dataSource
+
+    
+                // when cell is selected
+                tableView.rx
+                    .modelSelected(Contact.self)
+                    .subscribe(
+                        onNext: { [weak self] item in
+                            if let selectedRowIndexPath = self?.tableView.indexPathForSelectedRow {
+                                self?.tableView?.deselectRow(at: selectedRowIndexPath, animated: true)
+                                self?.onContactSelected?(item)
+                            }
+                        }
+                    )
+                    .disposed(by: disposeBag)
+
+        
+         viewModel.contactViewModels
+        .bind(to: tableView.rx.items(dataSource: dataSource))
+        .disposed(by: disposeBag)
+        
+//                viewModel.contactViewModels.bind(to: tableView.rx.items) { tableView, _, element in
+//                    guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id) as? ContactTableViewCell else {
+//                        return UITableViewCell()
+//                    }
+//                    cell.viewModel = element
+//                    return cell
+//                }.disposed(by: disposeBag)
+
+                // For pagination
+        //        tableView.rx.contentOffset
+        //            .flatMap { [weak self] edge in
+        //                self?.tableView.isNearBottomEdge(edgeOffset: 250.0) ?? false
+        //                    ? Observable.just(())
+        //                    : Observable.empty()
+        //        }.asObservable()
+        //            //.take(1)
+        //            //.debounce(DispatchTimeInterval.seconds(1), scheduler: MainScheduler.instance)
+        //            .subscribe { [weak self] edge in
+        //                print("edge \(edge.element)")
+        //                self?.viewModel.fetchContactss(isLoadingMore: true)
+        //        }.disposed(by: disposeBag)
+        
+        // setting delegate
+                      tableView.rx.setDelegate(self)
+                          .disposed(by: disposeBag)
+        
     }
 }
 
 extension HomeVC: UITableViewDelegate {
+    
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 26
+    }
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        70
+        65
     }
 }

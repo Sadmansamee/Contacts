@@ -43,5 +43,6 @@ final class AppCoordinator: BaseCoordinator {
         self.navigationController = navigationController
 
         self.window.rootViewController = navigationController
+        navigationController.navigationBar.tintColor = .paste
     }
 }

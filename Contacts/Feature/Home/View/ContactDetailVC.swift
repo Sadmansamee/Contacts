@@ -15,7 +15,7 @@ protocol ContactDetailVCProtocol: AnyObject {
     var onBack: (() -> Void)? { get set }
 }
 
-class ContactDetailVC: UIViewController, HomeStoryboardLoadable, ContactDetailVCProtocol {
+class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDetailVCProtocol {
     // MARK: - Properties
 
     var viewModel: ContactsDetailVM!
@@ -32,7 +32,7 @@ class ContactDetailVC: UIViewController, HomeStoryboardLoadable, ContactDetailVC
     // MARK: - Private functions
 
     private func bindViewModel() {
-        viewModel.onShowAlert
+        viewModel.alertMessage
             .map { [weak self] in
                 self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
             }.subscribe()

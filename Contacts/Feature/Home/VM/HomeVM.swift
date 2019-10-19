@@ -17,19 +17,19 @@ final class HomeVM {
     private let _isLoading = BehaviorRelay(value: false)
 
     private let _alertMessage = PublishSubject<AlertMessage>()
-    private let _cells = BehaviorRelay<[ContactViewModel]>(value: [])
+    private let _contactViewModels = BehaviorRelay<[ContactGroup]>(value: [])
 
-    var onShowingLoading: Observable<Bool> {
+    var isLoading: Observable<Bool> {
         _isLoading.asObservable()
             .distinctUntilChanged()
     }
 
-    var onShowAlert: Observable<AlertMessage> {
+    var alertMessage: Observable<AlertMessage> {
         _alertMessage.asObservable()
     }
 
-    var cells: Observable<[ContactViewModel]> {
-        _cells.asObservable()
+    var contactViewModels: Observable<[ContactGroup]> {
+        _contactViewModels.asObservable()
     }
 
     init(homeProvider: MoyaProvider<HomeService>) {
@@ -49,13 +49,16 @@ final class HomeVM {
 
                     let json = JSON(filteredResponse.data)
 
-                    let items = json.arrayValue.compactMap {
+                    let contacts = json.arrayValue.compactMap {
                         Contact(fromJson: $0)
                     }
+                    
+                    let groupedContacts = Dictionary(grouping: contacts, by: { String($0.firstName.first!) })
+                    let contactGroups = groupedContacts.map({ ContactGroup(header: $0.0, items: $0.1) }).sorted{$0.header < $1.header}
+                    
+                    let data = self._contactViewModels.value + contactGroups
 
-                    let data = self._cells.value + items
-
-                    self._cells.accept(data)
+                    self._contactViewModels.accept(data)
 
                 } catch {
                     self._alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))

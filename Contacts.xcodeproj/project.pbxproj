@@ -45,6 +45,8 @@
 		1ADC8596234F5E920019AC62 /* ContactsList.json in Resources */ = {isa = PBXBuildFile; fileRef = 1ADC8595234F5E920019AC62 /* ContactsList.json */; };
 		1ADC859A234F608F0019AC62 /* MockJsonFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADC8599234F608F0019AC62 /* MockJsonFile.swift */; };
 		1AE382C52359F60A000F8124 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE382C42359F60A000F8124 /* Contact.swift */; };
+		1AE382C7235A103A000F8124 /* ContactGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE382C6235A103A000F8124 /* ContactGroup.swift */; };
+		1AE382C9235AC694000F8124 /* K+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE382C8235AC694000F8124 /* K+Color.swift */; };
 		2E1EA1546D1AFB7B63255E9B /* Pods_Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD829E4B53BB9BF84B012F5 /* Pods_Contacts.framework */; };
 		B21AF4763946B97BFF9A682F /* Pods_ContactsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5673794388E4C2AC5A263ED /* Pods_ContactsTests.framework */; };
 /* End PBXBuildFile section */
@@ -102,6 +104,8 @@
 		1ADC8595234F5E920019AC62 /* ContactsList.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ContactsList.json; sourceTree = "<group>"; };
 		1ADC8599234F608F0019AC62 /* MockJsonFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockJsonFile.swift; sourceTree = "<group>"; };
 		1AE382C42359F60A000F8124 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		1AE382C6235A103A000F8124 /* ContactGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroup.swift; sourceTree = "<group>"; };
+		1AE382C8235AC694000F8124 /* K+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "K+Color.swift"; sourceTree = "<group>"; };
 		5A30FC25C2D421F9E5393AD1 /* Pods-ContactsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsUITests.release.xcconfig"; path = "Target Support Files/Pods-ContactsUITests/Pods-ContactsUITests.release.xcconfig"; sourceTree = "<group>"; };
 		63C9A6DF5EB6BA281B37F41A /* Pods_ContactsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContactsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FD829E4B53BB9BF84B012F5 /* Pods_Contacts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Contacts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -299,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				1AE382C42359F60A000F8124 /* Contact.swift */,
+				1AE382C6235A103A000F8124 /* ContactGroup.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -332,6 +337,7 @@
 			children = (
 				1ADC8565234D9E100019AC62 /* K+Storyboard.swift */,
 				1ADC8567234D9FFC0019AC62 /* K+Url.swift */,
+				1AE382C8235AC694000F8124 /* K+Color.swift */,
 			);
 			path = Constant;
 			sourceTree = "<group>";
@@ -588,11 +594,13 @@
 				1ADC8566234D9E100019AC62 /* K+Storyboard.swift in Sources */,
 				1ADC8579234DCAF80019AC62 /* Extension+Cell.swift in Sources */,
 				1ADC851D234C58650019AC62 /* AppDelegate.swift in Sources */,
+				1AE382C9235AC694000F8124 /* K+Color.swift in Sources */,
 				1ADC857D234DCE2F0019AC62 /* ContactDetailVC.swift in Sources */,
 				1ADC856E234DBD8D0019AC62 /* HomeVM.swift in Sources */,
 				1ADC8568234D9FFC0019AC62 /* K+Url.swift in Sources */,
 				1ADC856A234DA13C0019AC62 /* HomeService.swift in Sources */,
 				1ADC855E234D9D110019AC62 /* HomeCoordinator.swift in Sources */,
+				1AE382C7235A103A000F8124 /* ContactGroup.swift in Sources */,
 				1ADC8550234D99690019AC62 /* AppDelegate+Setup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

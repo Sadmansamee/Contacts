@@ -10,10 +10,28 @@ import Foundation
 
 protocol ContactViewModel {
     var contactVM: Contact { get }
+    var name: String {get}
+    var isFavorite: Bool {get}
+    var profilePicVM: String {get}
+
 }
 
+
 extension Contact: ContactViewModel {
+    var profilePicVM: String {
+        return K.Url.base + profilePic
+    }
+    
     var contactVM: Contact {
         self
     }
+    var name : String{
+        return firstName + " " + lastName
+    }
+  
+    
+    var isFavorite: Bool {
+           favorite
+       }
+    
 }

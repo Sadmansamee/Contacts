@@ -14,6 +14,7 @@ import RxSwift
 import SwiftyJSON
 
 final class ContactsDetailVM {
+    
     var homeProvider: MoyaProvider<HomeService>
     var contactViewModel: ContactViewModel
 
@@ -21,22 +22,22 @@ final class ContactsDetailVM {
     private let _alertMessage = PublishSubject<AlertMessage>()
     private let _contact = PublishSubject<Contact>()
 
-    var onShowingLoading: Observable<Bool> {
+    var isLoading: Observable<Bool> {
         _isLoading.asObservable()
             .distinctUntilChanged()
     }
 
-    var onShowAlert: Observable<AlertMessage> {
+    var alertMessage: Observable<AlertMessage> {
         _alertMessage.asObservable()
     }
 
-    var survey: Observable<Contact> {
+    var contact: Observable<Contact> {
         _contact.asObservable()
     }
 
     init(homeProvider: MoyaProvider<HomeService>, contactViewModel: ContactViewModel) {
         self.homeProvider = homeProvider
         self.contactViewModel = contactViewModel
-        _contact.onNext(contactViewModel.contactVM)
+        //_contact.onNext(contactViewModel.contactVM.contactVM.)
     }
 }

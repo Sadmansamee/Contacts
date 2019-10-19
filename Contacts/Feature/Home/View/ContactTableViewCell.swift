@@ -9,7 +9,9 @@
 import UIKit
 
 class ContactTableViewCell: UITableViewCell {
-    @IBOutlet var radio: UIView!
+    @IBOutlet weak var imageViewProfile: UIImageView!
+    @IBOutlet weak var labelName: UILabel!
+    @IBOutlet weak var imageViewFavorite: UIImageView!
     var viewModel: ContactViewModel? {
         didSet {
             bindViewModel()
@@ -19,9 +21,7 @@ class ContactTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        radio.makeCircular()
-        radio.layer.borderWidth = 1.4
-        radio.layer.borderColor = UIColor.white.cgColor
+        imageViewProfile.makeCircular()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -29,6 +29,13 @@ class ContactTableViewCell: UITableViewCell {
     }
 
     private func bindViewModel() {
-        if let vm = viewModel {}
+        if let vm = viewModel {
+            labelName.text = vm.name
+            imageViewFavorite.isHidden = !vm.isFavorite
+            
+            let url = URL(string: vm.profilePicVM)
+            imageViewProfile.kf.setImage(with: url,placeholder: #imageLiteral(resourceName: "placeholder_photo"))
+            
+        }
     }
 }
