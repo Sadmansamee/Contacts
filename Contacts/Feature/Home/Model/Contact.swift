@@ -12,6 +12,9 @@ struct Contact {
     var profilePic: String!
     var url: String!
 
+    var email : String!
+    var phoneNumber : String!
+    
     /**
      * Instantiate the instance using the passed json values to set the properties values
      */
@@ -25,5 +28,8 @@ struct Contact {
         lastName = json["last_name"].stringValue
         profilePic = json["profile_pic"].stringValue
         url = json["url"].stringValue
+        email = json["email"].stringValue
+        phoneNumber = json["phone_number"].stringValue
+
     }
 }

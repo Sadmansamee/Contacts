@@ -10,4 +10,5 @@ import Foundation
 
 enum MockJson: String {
     case Contacts
+    case ContactDetail
 }

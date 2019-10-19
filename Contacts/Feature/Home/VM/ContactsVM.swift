@@ -11,8 +11,8 @@ import RxRelay
 import RxSwift
 import SwiftyJSON
 
-final class HomeVM {
-    private var homeProvider: MoyaProvider<HomeService>
+final class ContactsVM {
+    private var homeProvider: MoyaProvider<ContactService>
 
     private let _isLoading = BehaviorRelay(value: false)
 
@@ -32,7 +32,7 @@ final class HomeVM {
         _contactViewModels.asObservable()
     }
 
-    init(homeProvider: MoyaProvider<HomeService>) {
+    init(homeProvider: MoyaProvider<ContactService>) {
         self.homeProvider = homeProvider
     }
 

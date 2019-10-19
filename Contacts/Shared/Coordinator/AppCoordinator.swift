@@ -44,5 +44,9 @@ final class AppCoordinator: BaseCoordinator {
 
         self.window.rootViewController = navigationController
         navigationController.navigationBar.tintColor = .paste
+        navigationController.navigationBar.barTintColor = .white
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController.navigationBar.shadowImage = UIImage()
     }
 }

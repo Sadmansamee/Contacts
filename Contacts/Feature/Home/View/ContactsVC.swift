@@ -13,11 +13,11 @@ import Swinject
 import UIKit
 import RxDataSources
 
-class HomeVC: UIViewController, HomeStoryboardLoadable {
+class ContactsVC: UIViewController, HomeStoryboardLoadable {
     var onContactSelected: ((ContactViewModel) -> Void)?
 
     @IBOutlet var tableView: UITableView!
-    var viewModel: HomeVM!
+    var viewModel: ContactsVM!
     private var disposeBag = DisposeBag()
 
     var loadingView: UIActivityIndicatorView!
@@ -89,7 +89,7 @@ class HomeVC: UIViewController, HomeStoryboardLoadable {
 
 // MARK: - TableView
 
-extension HomeVC {
+extension ContactsVC {
     
     fileprivate func configureDataSource() {
         
@@ -111,17 +111,14 @@ extension HomeVC {
                 return cell
             },
             titleForHeaderInSection: { dataSource, index in
-               return dataSource.sectionModels[index].header
+                dataSource.sectionModels[index].header
         },sectionIndexTitles: { dataSource in
-            let titles =  dataSource.sectionModels.map { $0.header}
-            return titles
+             dataSource.sectionModels.map { $0.header}
         }, sectionForSectionIndexTitle: { source, title, index in
             index }
         )
         
         self.dataSource = dataSource
-
-    
                 // when cell is selected
                 tableView.rx
                     .modelSelected(Contact.self)
@@ -169,11 +166,11 @@ extension HomeVC {
     }
 }
 
-extension HomeVC: UITableViewDelegate {
+extension ContactsVC: UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 26
+        return 28
     }
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         65

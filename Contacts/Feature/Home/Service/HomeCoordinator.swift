@@ -36,9 +36,9 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
     // MARK: - Private methods
 
     private func showHomeVC() {
-        let vc = container.resolveViewController(HomeVC.self)
+        let vc = container.resolveViewController(ContactsVC.self)
         vc.onContactSelected = { viewModel in
-            self.showContactsDetailVC(viewModel: ContactsDetailVM(homeProvider: self.container.resolve(MoyaProvider<HomeService>.self)!, contactViewModel: viewModel))
+            self.showContactsDetailVC(viewModel: ContactsDetailVM(homeProvider: self.container.resolve(MoyaProvider<ContactService>.self)!, contactViewModel: viewModel))
         }
         navigationController.pushViewController(vc, animated: true)
     }

@@ -17,20 +17,20 @@ extension AppDelegate {
     internal func setupDependencies() {
         // MARK: - Providers
 
-        container.register(MoyaProvider<HomeService>.self, factory: { _ in
-            MoyaProvider<HomeService>()
+        container.register(MoyaProvider<ContactService>.self, factory: { _ in
+            MoyaProvider<ContactService>()
         }).inObjectScope(ObjectScope.container)
 
         // MARK: - View Model
 
-        container.register(HomeVM.self, factory: { container in
-            HomeVM(homeProvider: container.resolve(MoyaProvider<HomeService>.self)!)
+        container.register(ContactsVM.self, factory: { container in
+            ContactsVM(homeProvider: container.resolve(MoyaProvider<ContactService>.self)!)
         }).inObjectScope(ObjectScope.container)
 
         // MARK: - View Controllers
 
-        container.storyboardInitCompleted(HomeVC.self) { r, c in
-            c.viewModel = r.resolve(HomeVM.self)
+        container.storyboardInitCompleted(ContactsVC.self) { r, c in
+            c.viewModel = r.resolve(ContactsVM.self)
         }
 
         container.storyboardInitCompleted(ContactDetailVC.self) { _, _ in

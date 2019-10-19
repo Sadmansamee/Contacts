@@ -13,25 +13,35 @@ protocol ContactViewModel {
     var name: String {get}
     var isFavorite: Bool {get}
     var profilePicVM: String {get}
+    var emailVM: String {get}
+    var phoneNumberVM: String {get}
 
 }
 
 
 extension Contact: ContactViewModel {
+    
+    var emailVM: String {
+        email
+    }
+    
+    var phoneNumberVM: String {
+        phoneNumber
+    }
+    
     var profilePicVM: String {
-        return K.Url.base + profilePic
+        K.Url.base + profilePic
     }
     
     var contactVM: Contact {
         self
     }
     var name : String{
-        return firstName + " " + lastName
+         firstName + " " + lastName
     }
   
-    
     var isFavorite: Bool {
-           favorite
-       }
+        favorite
+    }
     
 }
