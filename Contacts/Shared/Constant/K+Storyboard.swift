@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 enum KStoryboard: String {
-    case Home
+    case home
 }
 
 protocol StoryboardLoadable: AnyObject {
@@ -22,6 +22,6 @@ protocol HomeStoryboardLoadable: StoryboardLoadable {}
 
 extension HomeStoryboardLoadable where Self: UIViewController {
     static var storyboardName: String {
-        KStoryboard.Home.rawValue
+        KStoryboard.home.rawValue
     }
 }

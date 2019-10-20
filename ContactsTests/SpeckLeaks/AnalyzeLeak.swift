@@ -19,9 +19,9 @@ public typealias OSViewController = NSViewController
 import Nimble
 import Quick
 
-func view(_ vc: AnyObject?) {
-    if let vc = vc as? OSViewController {
-        _ = vc.view // To call viewDidLoad on the vc
+func view(_ viewController: AnyObject?) {
+    if let viewController = viewController as? OSViewController {
+        _ = viewController.view // To call viewDidLoad on the vc
     }
 }
 

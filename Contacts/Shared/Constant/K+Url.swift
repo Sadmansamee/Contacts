@@ -10,7 +10,7 @@ import Foundation
 
 import UIKit
 
-struct K {
+struct Constant {
     struct Url {
         static let base = "http://gojek-contacts-app.herokuapp.com/"
     }

@@ -36,19 +36,53 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
     // MARK: - Private methods
 
     private func showHomeVC() {
-        let vc = container.resolveViewController(ContactsVC.self)
-        vc.onContactSelected = { viewModel in
-            self.showContactsDetailVC(viewModel: ContactsDetailVM(homeProvider: self.container.resolve(MoyaProvider<ContactService>.self)!, contactViewModel: viewModel))
+        let viewController = container.resolveViewController(ContactsVC.self)
+        viewController.onContactSelected = { viewModel in
+            self.showContactsDetailVC(viewModel:
+                ContactsDetailVM(contactProvider: self.container.resolve(MoyaProvider<ContactService>.self)!,
+                                 viewModel: viewModel))
         }
-        navigationController.pushViewController(vc, animated: true)
+        viewController.onAddContact = { [unowned self] in
+            self.showToAddContactEditCreateVC()
+        }
+        navigationController.pushViewController(viewController, animated: true)
     }
 
     private func showContactsDetailVC(viewModel: ContactsDetailVM) {
-        let vc = container.resolveViewController(ContactDetailVC.self)
-        vc.onBack = { [unowned self] in
+        let viewController = container.resolveViewController(ContactDetailVC.self)
+        viewController.onBack = { [unowned self] in
             self.navigationController.popViewController(animated: true)
         }
-        vc.viewModel = viewModel
-        navigationController.pushViewController(vc, animated: true)
+
+        viewController.onEditContact = { contactViewModel in
+            self.showToEditContactEditCreateVC(viewModel:
+                ContactEditCreateViewModel(contactProvider: self.container.resolve(MoyaProvider<ContactService>.self)!,
+                                           viewModel: contactViewModel))
+        }
+
+        viewController.viewModel = viewModel
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+    private func showToEditContactEditCreateVC(viewModel: ContactEditCreateViewModel) {
+        let viewController = container.resolveViewController(ContactEditCreateVC.self)
+        viewController.onBack = { [unowned self] in
+            self.navigationController.dismiss(animated: true, completion: nil)
+        }
+        viewController.onSuccess = { _ in
+        }
+        viewController.viewModel = viewModel
+        navigationController.present(viewController, animated: true, completion: nil)
+    }
+
+    private func showToAddContactEditCreateVC() {
+        let viewController = container.resolveViewController(ContactEditCreateVC.self)
+        viewController.onBack = { [unowned self] in
+            self.navigationController.dismiss(animated: true, completion: nil)
+        }
+        viewController.onSuccess = { _ in
+        }
+
+        navigationController.present(viewController, animated: true, completion: nil)
     }
 }

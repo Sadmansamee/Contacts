@@ -10,19 +10,19 @@ import Foundation
 import RxDataSources
 
 struct ContactGroup {
-  var header: String
-  var items: [Item]
+    var header: String
+    var items: [Item]
 }
-extension ContactGroup: SectionModelType {
 
-  typealias Item = Contact
-    
+extension ContactGroup: SectionModelType {
+    typealias Item = Contact
+
     var identity: String {
         return header
     }
-    
-   init(original: ContactGroup, items: [Item]) {
-    self = original
-    self.items = items
-  }
+
+    init(original: ContactGroup, items: [Item]) {
+        self = original
+        self.items = items
+    }
 }

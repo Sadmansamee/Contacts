@@ -1,49 +1,54 @@
 //
-//  ContactsDetailVC.swift
+//  ContactEditCreateVC.swift
 //  Contacts
 //
-//  Created by sadman samee on 10/9/19.
+//  Created by sadman samee on 10/19/19.
 //  Copyright © 2019 Sadman Samee. All rights reserved.
 //
 
-import Kingfisher
 import RxCocoa
 import RxSwift
 import UIKit
 
-protocol ContactDetailVCProtocol: AnyObject {
+protocol ContactEditCreateVCProtocol: AnyObject {
     var onBack: (() -> Void)? { get set }
-    var onEditContact: ((ContactViewModel) -> Void)? { get set }
+    var onSuccess: ((ContactViewModel) -> Void)? { get set }
 }
 
-class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDetailVCProtocol {
-    // MARK: - ContactDetailVCProtocol
+class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, ContactEditCreateVCProtocol {
+    // MARK: - ContactEditCreateVCProtocol
 
     var onBack: (() -> Void)?
-    var onEditContact: ((ContactViewModel) -> Void)?
+    var onSuccess: ((ContactViewModel) -> Void)?
 
-    // MARK: - Properties
-
-    var viewModel: ContactsDetailVM!
     private var disposeBag = DisposeBag()
 
+    var viewModel: ContactEditCreateViewModel!
+
     @IBOutlet var headerCell: UITableViewCell!
+
+    @IBOutlet var btnDone: UIButton!
+    @IBOutlet var btnCancel: UIButton!
     @IBOutlet var imageViewProfile: UIImageView!
-    @IBOutlet var labelName: UILabel!
 
-    @IBOutlet var imageViewFavourite: UIImageView!
-    @IBOutlet var labelMobile: UILabel!
-    @IBOutlet var labelEmail: UILabel!
+    @IBOutlet var textFieldFirstName: UITextField!
+    @IBOutlet var textFieldLastName: UITextField!
+    @IBOutlet var textFieldMobile: UITextField!
 
+    @IBOutlet var textFieldEmail: UITextField!
     private var loadingView: UIActivityIndicatorView!
-    private var contactViewModel: ContactViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUI()
         bindViewModel()
         viewModelCallbacks()
+    }
+
+    @IBAction func actionDone(_: Any) {}
+
+    @IBAction func actionCancel(_: Any) {
+        onBack?()
     }
 
     // MARK: - Private functions
@@ -65,23 +70,44 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
             }
             .subscribe()
             .disposed(by: disposeBag)
+
+        viewModel.onSuccess
+            .map { [weak self] in
+                // self?.setContactDetailUI(contactViewModel: $0)
+                self?.onSuccess?($0.0)
+                self?.onBack?()
+            }.subscribe()
+            .disposed(by: disposeBag)
     }
 
     private func bindViewModel() {
-        viewModel.onContactViewModel
-            .map { [weak self] in
-                self?.setContactDetailUI(contactViewModel: $0)
-            }.subscribe()
+        textFieldFirstName.rx.text.orEmpty
+            .bind(to: viewModel.firstName)
+            .disposed(by: disposeBag)
+
+        textFieldLastName.rx.text.orEmpty
+            .bind(to: viewModel.lastName)
+            .disposed(by: disposeBag)
+
+        textFieldMobile.rx.text.orEmpty
+            .bind(to: viewModel.phoneNumber)
+            .disposed(by: disposeBag)
+
+        textFieldEmail.rx.text.orEmpty
+            .bind(to: viewModel.email)
+            .disposed(by: disposeBag)
+
+        viewModel.isValidAll
+            .bind(to: btnDone.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        btnDone.rx.tap.asObservable()
+            .bind(to: viewModel.doneButtonTapped)
             .disposed(by: disposeBag)
     }
 
     private func setUI() {
         headerCell.layerGradient(startColor: .white, endColor: .litePaste)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(actionEdit(_:)))
-
         setLoadingView()
         imageViewProfile.makeCircular()
     }
@@ -102,31 +128,9 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
         view.addSubview(loadingView)
     }
 
-    private func setContactDetailUI(contactViewModel: ContactViewModel) {
-        self.contactViewModel = contactViewModel
-        let url = URL(string: contactViewModel.profilePicVM)
-        imageViewProfile.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder_photo"))
-        labelName.text = contactViewModel.name
-
-        labelEmail.text = contactViewModel.emailVM
-        labelMobile.text = contactViewModel.phoneNumberVM
-
-        if contactViewModel.isFavorite {
-            imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button_selected")
-        } else {
-            imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button")
-        }
-    }
-
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
         present(alert, animated: true)
-    }
-
-    @IBAction func actionDelete(_: Any) {}
-
-    @IBAction func actionEdit(_: Any) {
-        onEditContact?(contactViewModel)
     }
 }

@@ -9,6 +9,6 @@
 import Foundation
 
 enum MockJson: String {
-    case Contacts
-    case ContactDetail
+    case contacts
+    case contact
 }

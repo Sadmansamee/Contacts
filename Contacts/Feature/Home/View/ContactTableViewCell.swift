@@ -9,9 +9,9 @@
 import UIKit
 
 class ContactTableViewCell: UITableViewCell {
-    @IBOutlet weak var imageViewProfile: UIImageView!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var imageViewFavorite: UIImageView!
+    @IBOutlet var imageViewProfile: UIImageView!
+    @IBOutlet var labelName: UILabel!
+    @IBOutlet var imageViewFavorite: UIImageView!
     var viewModel: ContactViewModel? {
         didSet {
             bindViewModel()
@@ -29,13 +29,12 @@ class ContactTableViewCell: UITableViewCell {
     }
 
     private func bindViewModel() {
-        if let vm = viewModel {
-            labelName.text = vm.name
-            imageViewFavorite.isHidden = !vm.isFavorite
-            
-            let url = URL(string: vm.profilePicVM)
-            imageViewProfile.kf.setImage(with: url,placeholder: #imageLiteral(resourceName: "placeholder_photo"))
-            
+        if let viewModel = viewModel {
+            labelName.text = viewModel.name
+            imageViewFavorite.isHidden = !viewModel.isFavorite
+
+            let url = URL(string: viewModel.profilePicVM)
+            imageViewProfile.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder_photo"))
         }
     }
 }

@@ -17,9 +17,10 @@ extension Container {
      - Parameter serviceType: UIViewController type
      - Returns: UIViewController of specified type
      */
-    func resolveViewController<ViewController: StoryboardLoadable>(_ serviceType: ViewController.Type) -> ViewController {
-        let sb = SwinjectStoryboard.create(name: serviceType.storyboardName, bundle: nil, container: self)
+    func resolveViewController<ViewController: StoryboardLoadable>(_ serviceType: ViewController.Type)
+        -> ViewController {
+        let storyboard = SwinjectStoryboard.create(name: serviceType.storyboardName, bundle: nil, container: self)
         let name = "\(serviceType)".replacingOccurrences(of: "ViewController", with: "")
-        return sb.instantiateViewController(withIdentifier: name) as! ViewController
+        return storyboard.instantiateViewController(withIdentifier: name) as! ViewController
     }
 }

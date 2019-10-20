@@ -8,20 +8,28 @@
 
 import Kingfisher
 import RxCocoa
+import RxDataSources
 import RxSwift
 import Swinject
 import UIKit
-import RxDataSources
 
-class ContactsVC: UIViewController, HomeStoryboardLoadable {
+protocol ContactsVCProtocol: AnyObject {
+    var onAddContact: (() -> Void)? { get set }
+    var onContactSelected: ((ContactViewModel) -> Void)? { get set }
+}
+
+class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
+    // MARK: - ContactsVCProtocol
+
+    var onAddContact: (() -> Void)?
     var onContactSelected: ((ContactViewModel) -> Void)?
 
     @IBOutlet var tableView: UITableView!
-    var viewModel: ContactsVM!
+    var viewModel: ContactsViewModel!
     private var disposeBag = DisposeBag()
 
     var loadingView: UIActivityIndicatorView!
-    var dataSource : RxTableViewSectionedReloadDataSource<ContactGroup>?
+    var dataSource: RxTableViewSectionedReloadDataSource<ContactGroup>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,19 +38,28 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable {
         setLoadingView()
         setUpTableView()
         bindViewModel()
+        viewModelCallbacks()
     }
 
     // MARK: - Private functions
 
     private func setUI() {
         title = "Contact"
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "add.png")
+            .withRenderingMode(.alwaysOriginal), style: .plain,
+                                                 target: self,
+                                                 action: #selector(actionAddContact(_:)))
     }
 
-    private func bindViewModel() {
-        viewModel.fetchContactss()
+    func viewModelCallbacks() {
+        viewModel.onAlertMessage
+            .map { [weak self] in
+                self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
+            }.subscribe()
+            .disposed(by: disposeBag)
 
-        // show initial loading view
-        viewModel.isLoading
+        viewModel.onLoading
             .map { [weak self] isLoading in
                 if isLoading {
                     self?.loadingView.startAnimating()
@@ -52,14 +69,10 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable {
             }
             .subscribe()
             .disposed(by: disposeBag)
+    }
 
-        //to show if there are any alert
-        viewModel.alertMessage
-            .map { [weak self] in
-                self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
-            }
-            .subscribe()
-            .disposed(by: disposeBag)
+    private func bindViewModel() {
+        viewModel.fetchContactss()
     }
 
     private func setLoadingView() {
@@ -78,6 +91,10 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable {
         view.addSubview(loadingView)
     }
 
+    @objc func actionAddContact(_: Any) {
+        onAddContact?()
+    }
+
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
 
@@ -90,21 +107,16 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable {
 // MARK: - TableView
 
 extension ContactsVC {
-    
-    fileprivate func configureDataSource() {
-        
-    }
-    
-    // MARK: -  TableView
+    // MARK: - TableView
+
     private func setUpTableView() {
-        
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(ContactTableViewCell.nib, forCellReuseIdentifier: ContactTableViewCell.id)
-    
-      let  dataSource = RxTableViewSectionedReloadDataSource<ContactGroup>(
-            configureCell: {
-                [weak self] dataSource, tableView, indexPath, item in
-               guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id) as? ContactTableViewCell else {
+
+        let dataSource = RxTableViewSectionedReloadDataSource<ContactGroup>(
+            configureCell: {  _, tableView, _, item in
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id)
+                    as? ContactTableViewCell else {
                     return UITableViewCell()
                 }
                 cell.viewModel = item
@@ -112,31 +124,31 @@ extension ContactsVC {
             },
             titleForHeaderInSection: { dataSource, index in
                 dataSource.sectionModels[index].header
-        },sectionIndexTitles: { dataSource in
-             dataSource.sectionModels.map { $0.header}
-        }, sectionForSectionIndexTitle: { source, title, index in
-            index }
+            }, sectionIndexTitles: { dataSource in
+                dataSource.sectionModels.map { $0.header }
+            }, sectionForSectionIndexTitle: { _, _, index in
+                index
+            }
         )
-        
-        self.dataSource = dataSource
-                // when cell is selected
-                tableView.rx
-                    .modelSelected(Contact.self)
-                    .subscribe(
-                        onNext: { [weak self] item in
-                            if let selectedRowIndexPath = self?.tableView.indexPathForSelectedRow {
-                                self?.tableView?.deselectRow(at: selectedRowIndexPath, animated: true)
-                                self?.onContactSelected?(item)
-                            }
-                        }
-                    )
-                    .disposed(by: disposeBag)
 
-        
-         viewModel.contactViewModels
-        .bind(to: tableView.rx.items(dataSource: dataSource))
-        .disposed(by: disposeBag)
-        
+        self.dataSource = dataSource
+        // when cell is selected
+        tableView.rx
+            .modelSelected(Contact.self)
+            .subscribe(
+                onNext: { [weak self] item in
+                    if let selectedRowIndexPath = self?.tableView.indexPathForSelectedRow {
+                        self?.tableView?.deselectRow(at: selectedRowIndexPath, animated: true)
+                        self?.onContactSelected?(item)
+                    }
+                }
+            )
+            .disposed(by: disposeBag)
+
+        viewModel.onContactViewModels
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+
 //                viewModel.contactViewModels.bind(to: tableView.rx.items) { tableView, _, element in
 //                    guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id) as? ContactTableViewCell else {
 //                        return UITableViewCell()
@@ -145,7 +157,7 @@ extension ContactsVC {
 //                    return cell
 //                }.disposed(by: disposeBag)
 
-                // For pagination
+        // For pagination
         //        tableView.rx.contentOffset
         //            .flatMap { [weak self] edge in
         //                self?.tableView.isNearBottomEdge(edgeOffset: 250.0) ?? false
@@ -158,20 +170,18 @@ extension ContactsVC {
         //                print("edge \(edge.element)")
         //                self?.viewModel.fetchContactss(isLoadingMore: true)
         //        }.disposed(by: disposeBag)
-        
+
         // setting delegate
-                      tableView.rx.setDelegate(self)
-                          .disposed(by: disposeBag)
-        
+        tableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
 }
 
 extension ContactsVC: UITableViewDelegate {
-    
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
         return 28
     }
+
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         65
     }

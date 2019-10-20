@@ -23,17 +23,25 @@ extension AppDelegate {
 
         // MARK: - View Model
 
-        container.register(ContactsVM.self, factory: { container in
-            ContactsVM(homeProvider: container.resolve(MoyaProvider<ContactService>.self)!)
+        container.register(ContactsViewModel.self, factory: { container in
+            ContactsViewModel(contactProvider: container.resolve(MoyaProvider<ContactService>.self)!)
+        }).inObjectScope(ObjectScope.container)
+
+        container.register(ContactEditCreateViewModel.self, factory: { container in
+            ContactEditCreateViewModel(contactProvider: container.resolve(MoyaProvider<ContactService>.self)!)
         }).inObjectScope(ObjectScope.container)
 
         // MARK: - View Controllers
 
-        container.storyboardInitCompleted(ContactsVC.self) { r, c in
-            c.viewModel = r.resolve(ContactsVM.self)
+        container.storyboardInitCompleted(ContactsVC.self) { resolver, controller in
+            controller.viewModel = resolver.resolve(ContactsViewModel.self)
         }
 
         container.storyboardInitCompleted(ContactDetailVC.self) { _, _ in
+        }
+
+        container.storyboardInitCompleted(ContactEditCreateVC.self) { resolver, controller in
+            controller.viewModel = resolver.resolve(ContactEditCreateViewModel.self)
         }
     }
 }

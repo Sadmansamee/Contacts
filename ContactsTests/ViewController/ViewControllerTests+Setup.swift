@@ -24,14 +24,14 @@ extension ViewControllerTest {
 
         // MARK: - View Model
 
-        container.register(ContactsVM.self, factory: { container in
+        container.register(ContactsViewModel.self, factory: { container in
 
-            ContactsVM(homeProvider: container.resolve(MoyaProvider<ContactService>.self)!)
+            ContactsViewModel(homeProvider: container.resolve(MoyaProvider<ContactService>.self)!)
         }).inObjectScope(ObjectScope.container)
 
         // MARK: - View Controllers
-        container.storyboardInitCompleted(ContactsVC.self) { r, c in
-            c.viewModel = r.resolve(ContactsVM.self)
+        container.storyboardInitCompleted(ContactsVC.self) { resolver, controller in
+            controller.viewModel = resolver.resolve(ContactsViewModel.self)
         }
 
         return container
