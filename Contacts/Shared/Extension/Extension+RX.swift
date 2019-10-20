@@ -19,3 +19,11 @@ extension UIScrollView {
         contentOffset.y + frame.size.height + edgeOffset == contentSize.height
     }
 }
+
+extension BehaviorRelay where Element: RangeReplaceableCollection {
+    func add(element: Element.Element) {
+        var array = value
+        array.append(element)
+        accept(array)
+    }
+}

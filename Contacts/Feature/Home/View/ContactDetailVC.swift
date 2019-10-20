@@ -31,6 +31,7 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
     @IBOutlet var imageViewProfile: UIImageView!
     @IBOutlet var labelName: UILabel!
 
+    @IBOutlet var btnDelete: UIButton!
     @IBOutlet var imageViewFavourite: UIImageView!
     @IBOutlet var labelMobile: UILabel!
     @IBOutlet var labelEmail: UILabel!
@@ -44,11 +45,36 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
         setUI()
         bindViewModel()
         viewModelCallbacks()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(onUpdatedContact(_:)), name: .didContactUpdated, object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Private functions
 
+    private func setUI() {
+        headerCell.layerGradient(startColor: .white, endColor: .litePaste)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(actionEdit(_:)))
+
+        setLoadingView()
+        imageViewProfile.makeCircular()
+    }
+
     func viewModelCallbacks() {
+        viewModel.onDelete
+            .map { [weak self] in
+                if $0 {
+                    self?.onBack?()
+                }
+            }.subscribe()
+            .disposed(by: disposeBag)
+
         viewModel.onAlertMessage
             .map { [weak self] in
                 self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
@@ -73,17 +99,16 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
                 self?.setContactDetailUI(contactViewModel: $0)
             }.subscribe()
             .disposed(by: disposeBag)
+
+        btnDelete.rx.tap.asObservable()
+            .bind(to: viewModel.deleteButtonTapped)
+            .disposed(by: disposeBag)
     }
 
-    private func setUI() {
-        headerCell.layerGradient(startColor: .white, endColor: .litePaste)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit",
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(actionEdit(_:)))
-
-        setLoadingView()
-        imageViewProfile.makeCircular()
+    @objc func onUpdatedContact(_ notification: Notification) {
+        if let dictionary = notification.userInfo as? [String: Any] {
+            viewModel.contactUpdated(dictionary: dictionary)
+        }
     }
 
     private func setLoadingView() {
@@ -104,8 +129,7 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
 
     private func setContactDetailUI(contactViewModel: ContactViewModel) {
         self.contactViewModel = contactViewModel
-        let url = URL(string: contactViewModel.profilePicVM)
-        imageViewProfile.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder_photo"))
+        imageViewProfile.kf.setImage(with: URL(string: contactViewModel.profilePicVM), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
         labelName.text = contactViewModel.name
 
         labelEmail.text = contactViewModel.emailVM

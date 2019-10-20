@@ -59,7 +59,6 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
                 ContactEditCreateViewModel(contactProvider: self.container.resolve(MoyaProvider<ContactService>.self)!,
                                            viewModel: contactViewModel))
         }
-
         viewController.viewModel = viewModel
         navigationController.pushViewController(viewController, animated: true)
     }

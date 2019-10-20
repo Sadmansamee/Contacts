@@ -13,7 +13,7 @@
 		1A59A1F3235B7FEF00894757 /* GenerelValidationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A59A1F2235B7FEF00894757 /* GenerelValidationViewModel.swift */; };
 		1A89B39A23559D2C0001C7E5 /* Extension+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B39923559D2C0001C7E5 /* Extension+View.swift */; };
 		1A89B3D12355BA290001C7E5 /* ContactTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C42355BA290001C7E5 /* ContactTest.swift */; };
-		1A89B3D22355BA290001C7E5 /* HomeVMTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C62355BA290001C7E5 /* HomeVMTest.swift */; };
+		1A89B3D22355BA290001C7E5 /* ContactsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C62355BA290001C7E5 /* ContactsViewModelTests.swift */; };
 		1A89B3D32355BA290001C7E5 /* ViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C82355BA290001C7E5 /* ViewControllerTest.swift */; };
 		1A89B3D42355BA290001C7E5 /* ViewControllerTests+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3C92355BA290001C7E5 /* ViewControllerTests+Setup.swift */; };
 		1A89B3D52355BA290001C7E5 /* AnalyzeLeak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3CB2355BA290001C7E5 /* AnalyzeLeak.swift */; };
@@ -23,6 +23,9 @@
 		1A89B3D92355BA290001C7E5 /* AnalyzeLeakAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3CF2355BA290001C7E5 /* AnalyzeLeakAction.swift */; };
 		1A89B3DA2355BA290001C7E5 /* Expectation+Leaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3D02355BA290001C7E5 /* Expectation+Leaks.swift */; };
 		1A89B3DC2355CC1F0001C7E5 /* Extension+RX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3DB2355CC1F0001C7E5 /* Extension+RX.swift */; };
+		1AC57B84235C0BA9007C3AC5 /* Extension+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC57B83235C0BA9007C3AC5 /* Extension+Validation.swift */; };
+		1AC57B86235C3738007C3AC5 /* K+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC57B85235C3738007C3AC5 /* K+Notification.swift */; };
+		1AC57B88235C63B3007C3AC5 /* Extension+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC57B87235C63B3007C3AC5 /* Extension+Animation.swift */; };
 		1ADC851D234C58650019AC62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADC851C234C58650019AC62 /* AppDelegate.swift */; };
 		1ADC8524234C58650019AC62 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ADC8522234C58650019AC62 /* Home.storyboard */; };
 		1ADC8526234C58670019AC62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ADC8525234C58670019AC62 /* Assets.xcassets */; };
@@ -76,7 +79,7 @@
 		1A89B3A12355B9200001C7E5 /* ContactsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A89B3A52355B9200001C7E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A89B3C42355BA290001C7E5 /* ContactTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTest.swift; sourceTree = "<group>"; };
-		1A89B3C62355BA290001C7E5 /* HomeVMTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeVMTest.swift; sourceTree = "<group>"; };
+		1A89B3C62355BA290001C7E5 /* ContactsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModelTests.swift; sourceTree = "<group>"; };
 		1A89B3C82355BA290001C7E5 /* ViewControllerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerTest.swift; sourceTree = "<group>"; };
 		1A89B3C92355BA290001C7E5 /* ViewControllerTests+Setup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewControllerTests+Setup.swift"; sourceTree = "<group>"; };
 		1A89B3CB2355BA290001C7E5 /* AnalyzeLeak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeLeak.swift; sourceTree = "<group>"; };
@@ -86,6 +89,9 @@
 		1A89B3CF2355BA290001C7E5 /* AnalyzeLeakAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeLeakAction.swift; sourceTree = "<group>"; };
 		1A89B3D02355BA290001C7E5 /* Expectation+Leaks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Expectation+Leaks.swift"; sourceTree = "<group>"; };
 		1A89B3DB2355CC1F0001C7E5 /* Extension+RX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+RX.swift"; sourceTree = "<group>"; };
+		1AC57B83235C0BA9007C3AC5 /* Extension+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Validation.swift"; sourceTree = "<group>"; };
+		1AC57B85235C3738007C3AC5 /* K+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "K+Notification.swift"; sourceTree = "<group>"; };
+		1AC57B87235C63B3007C3AC5 /* Extension+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Animation.swift"; sourceTree = "<group>"; };
 		1ADC8519234C58650019AC62 /* Contacts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Contacts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ADC851C234C58650019AC62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1ADC8523234C58650019AC62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Home.storyboard; sourceTree = "<group>"; };
@@ -192,7 +198,7 @@
 		1A89B3C52355BA290001C7E5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				1A89B3C62355BA290001C7E5 /* HomeVMTest.swift */,
+				1A89B3C62355BA290001C7E5 /* ContactsViewModelTests.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -354,6 +360,8 @@
 				1ADC857E234DCF730019AC62 /* Extension+Json.swift */,
 				1A89B39923559D2C0001C7E5 /* Extension+View.swift */,
 				1A89B3DB2355CC1F0001C7E5 /* Extension+RX.swift */,
+				1AC57B83235C0BA9007C3AC5 /* Extension+Validation.swift */,
+				1AC57B87235C63B3007C3AC5 /* Extension+Animation.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -364,6 +372,7 @@
 				1ADC8565234D9E100019AC62 /* K+Storyboard.swift */,
 				1ADC8567234D9FFC0019AC62 /* K+Url.swift */,
 				1AE382C8235AC694000F8124 /* K+Color.swift */,
+				1AC57B85235C3738007C3AC5 /* K+Notification.swift */,
 			);
 			path = Constant;
 			sourceTree = "<group>";
@@ -625,7 +634,7 @@
 				1A89B3D32355BA290001C7E5 /* ViewControllerTest.swift in Sources */,
 				1A89B3D72355BA290001C7E5 /* LeaksAnalyzer.swift in Sources */,
 				1A89B3DA2355BA290001C7E5 /* Expectation+Leaks.swift in Sources */,
-				1A89B3D22355BA290001C7E5 /* HomeVMTest.swift in Sources */,
+				1A89B3D22355BA290001C7E5 /* ContactsViewModelTests.swift in Sources */,
 				1A89B3D92355BA290001C7E5 /* AnalyzeLeakAction.swift in Sources */,
 				1A89B3D42355BA290001C7E5 /* ViewControllerTests+Setup.swift in Sources */,
 				1A89B3D52355BA290001C7E5 /* AnalyzeLeak.swift in Sources */,
@@ -648,6 +657,8 @@
 				1ADC857B234DCD800019AC62 /* ContactsDetailVM.swift in Sources */,
 				1A89B39A23559D2C0001C7E5 /* Extension+View.swift in Sources */,
 				1ADC8555234D9A6D0019AC62 /* AppCoordinator.swift in Sources */,
+				1AC57B86235C3738007C3AC5 /* K+Notification.swift in Sources */,
+				1AC57B84235C0BA9007C3AC5 /* Extension+Validation.swift in Sources */,
 				1AE382D3235B5BAF000F8124 /* ContactEditCreateVC.swift in Sources */,
 				1ADC8577234DC6860019AC62 /* ContactViewModel.swift in Sources */,
 				1ADC8571234DC5CD0019AC62 /* AlertMessage.swift in Sources */,
@@ -664,6 +675,7 @@
 				1A59A1F1235B7E8000894757 /* EmailValidationViewModel.swift in Sources */,
 				1ADC856A234DA13C0019AC62 /* ContactService.swift in Sources */,
 				1ADC855E234D9D110019AC62 /* HomeCoordinator.swift in Sources */,
+				1AC57B88235C63B3007C3AC5 /* Extension+Animation.swift in Sources */,
 				1AE382C7235A103A000F8124 /* ContactGroup.swift in Sources */,
 				1ADC8550234D99690019AC62 /* AppDelegate+Setup.swift in Sources */,
 			);

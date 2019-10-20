@@ -12,6 +12,8 @@ import RxSwift
 import SwiftyJSON
 
 final class ContactsViewModel {
+    // MARK: - Properties
+
     private var contactProvider: MoyaProvider<ContactService>
 
     private let isLoading = BehaviorRelay(value: false)
@@ -36,7 +38,31 @@ final class ContactsViewModel {
         self.contactProvider = contactProvider
     }
 
-    func fetchContactss(isRefresh _: Bool = false, isLoadingMore _: Bool = false) {
+    func contactUpdated(dictionary: [String: Any]) {
+        let json = JSON(dictionary)
+        let contact = Contact(fromJson: json)
+
+        // contactViewModels.value.filter { $0.header.elementsEqual(String(contact.firstName.first!))}.first?.items.filter { $0.id == contact.id }.first
+
+        if let groupIndex = contactViewModels.value.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }), let index = contactViewModels.value[groupIndex].items.firstIndex(where: { $0.id == contact.id }) {
+            // contactViewModels.value[groupIndex].items[index] = contact
+        }
+
+        // var value = contactViewModels.value.filter { $0.header.elementsEqual(String(contact.firstName.first!))}.first?.items.firstIndex { $0.id == contact.id }
+    }
+
+    func contactAdded(dictionary: [String: Any]) {
+        let json = JSON(dictionary)
+        let contact = Contact(fromJson: json)
+
+        let groupedContacts = Dictionary(grouping: [contact], by: { String($0.firstName.first!) })
+        let contactGroups = groupedContacts.map { ContactGroup(header: $0.0, items: $0.1) }
+            .sorted { $0.header < $1.header }
+
+        contactViewModels.accept(contactViewModels.value + contactGroups)
+    }
+
+    func fetchContacts() {
         isLoading.accept(true)
 
         contactProvider.request(.contacts, completion: { result in
@@ -57,9 +83,7 @@ final class ContactsViewModel {
                     let contactGroups = groupedContacts.map { ContactGroup(header: $0.0, items: $0.1) }
                         .sorted { $0.header < $1.header }
 
-                    let data = self.contactViewModels.value + contactGroups
-
-                    self.contactViewModels.accept(data)
+                    self.contactViewModels.accept(contactGroups)
 
                 } catch {
                     self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))

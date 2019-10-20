@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.9.0)
   - Differentiator (4.0.1)
+  - IQKeyboardManager (6.5.0)
   - Kingfisher (5.8.2):
     - Kingfisher/Core (= 5.8.2)
   - Kingfisher/Core (5.8.2)
@@ -32,6 +33,7 @@ PODS:
     - Swinject (~> 2.6)
 
 DEPENDENCIES:
+  - IQKeyboardManager
   - Kingfisher (~> 5.0)
   - Moya (~> 13.0)
   - Nimble
@@ -49,6 +51,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - Differentiator
+    - IQKeyboardManager
     - Kingfisher
     - Moya
     - Nimble
@@ -67,6 +70,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
+  IQKeyboardManager: 700e5155d6a292383b54e8678aec769e14fc78fc
   Kingfisher: 3adc15096595f5aed800bb0d5cb757fc58b2d2dd
   Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
   Nimble: 18d5360282923225d62b09d781f63abc1a0111fc
@@ -82,6 +86,6 @@ SPEC CHECKSUMS:
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
   SwinjectStoryboard: 32512ef16c2b0ff5b8f823b23539c4a50f6d3383
 
-PODFILE CHECKSUM: ddb3f94966cacd45555a6dc70bbcc5d688f86ae9
+PODFILE CHECKSUM: 678c869ef8f60ba8ab9d91a5aa4da7922be4c63f
 
 COCOAPODS: 1.7.5

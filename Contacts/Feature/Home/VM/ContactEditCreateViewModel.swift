@@ -16,14 +16,81 @@ final class ContactEditCreateViewModel {
         case update
         case create
     }
-
+    
+    // MARK: - Properties
     var contactProvider: MoyaProvider<ContactService>
     let disposeBag = DisposeBag()
-
+    private var taskMode: TaskMode!
+    
+    private let isLoading = BehaviorRelay(value: false)
+    private let alertMessage = PublishSubject<AlertMessage>()
+    private let contactViewModel = PublishSubject<ContactViewModel>()
+    private let isAddSuccess = PublishSubject<(ContactViewModel, Bool)>()
+    private let isEditSuccess = PublishSubject<(ContactViewModel, Bool)>()
+    
+    var url: String!
+    var email = BehaviorRelay<String>(value: "")
+    var phoneNumber = BehaviorRelay<String>(value: "")
+    var firstName = BehaviorRelay<String>(value: "")
+    private var imageUrl = BehaviorRelay<String>(value: "")
+    var lastName = BehaviorRelay<String>(value: "")
+    var favorite = BehaviorRelay<Bool>(value: false)
+    
+    let doneButtonTapped = PublishSubject<Void>()
+    
+    var onAddSuccess: Observable<(ContactViewModel, Bool)> {
+        isAddSuccess.asObservable()
+    }
+    
+    var onEditSuccess: Observable<(ContactViewModel, Bool)> {
+        isEditSuccess.asObservable()
+    }
+    
+    var onLoading: Observable<Bool> {
+        isLoading.asObservable()
+            .distinctUntilChanged()
+    }
+    
+    var onImageUrl: Observable<String> {
+        imageUrl.asObservable()
+            .distinctUntilChanged()
+    }
+    
+    var onAlertMessage: Observable<AlertMessage> {
+        alertMessage.asObservable()
+    }
+    
+    // MARK: - Validation
+    
+    private var isFirstnameValid: Observable<Bool> {
+        return firstName.asObservable().map { $0.count > 3 }
+    }
+    
+    private var isLastnameValid: Observable<Bool> {
+        return lastName.asObservable().map { $0.count > 3 }
+    }
+    
+    private var isPhoneNumberValid: Observable<Bool> {
+        return phoneNumber.asObservable().map { $0.count > 6 }
+    }
+    
+    private var isEmailValid: Observable<Bool> {
+        return email.asObservable().map { $0.count > 6 && $0.isvalidEmail }
+    }
+    
+    var isValidAll: Observable<Bool> {
+        return Observable.combineLatest(isFirstnameValid,
+                                        isLastnameValid,
+                                        isPhoneNumberValid,
+                                        isEmailValid) { $0 && $1 && $2 && $3 }
+    }
+    
+    // MARK: - INIT
+    
     init(contactProvider: MoyaProvider<ContactService>, viewModel: ContactViewModel? = nil) {
         self.contactProvider = contactProvider
         taskMode = .create
-
+        
         if let contactViewModel = viewModel {
             email.accept(contactViewModel.contactVM.email)
             phoneNumber.accept(contactViewModel.contactVM.phoneNumber)
@@ -31,67 +98,18 @@ final class ContactEditCreateViewModel {
             lastName.accept(contactViewModel.contactVM.lastName)
             favorite.accept(contactViewModel.contactVM.favorite)
             url = contactViewModel.contactVM.url
+            imageUrl.accept(contactViewModel.contactVM.profilePicVM)
             taskMode = .update
         }
-
+        
         doneButtonTapped.asObserver()
             .subscribe(onNext: { [weak self] in
                 self?.updateCreateContact()
             }).disposed(by: disposeBag)
     }
-
-    private let isLoading = BehaviorRelay(value: false)
-    private let alertMessage = PublishSubject<AlertMessage>()
-    private let contactViewModel = PublishSubject<ContactViewModel>()
-    private let isSuccess = PublishSubject<(ContactViewModel, Bool)>()
-
-    private var taskMode: TaskMode!
-
-    let doneButtonTapped = PublishSubject<Void>()
-
-    var onSuccess: Observable<(ContactViewModel, Bool)> {
-        isSuccess.asObservable()
-    }
-
-    var onLoading: Observable<Bool> {
-        isLoading.asObservable()
-            .distinctUntilChanged()
-    }
-
-    var onAlertMessage: Observable<AlertMessage> {
-        alertMessage.asObservable()
-    }
-
-    var url: String!
-    var email = BehaviorRelay<String>(value: "")
-    var phoneNumber = BehaviorRelay<String>(value: "")
-    var firstName = BehaviorRelay<String>(value: "")
-    var lastName = BehaviorRelay<String>(value: "")
-    var favorite = BehaviorRelay<Bool>(value: false)
-
-    private var isFirstnameValid: Observable<Bool> {
-        return firstName.asObservable().map { $0.count > 3 }
-    }
-
-    private var isLastnameValid: Observable<Bool> {
-        return lastName.asObservable().map { $0.count > 3 }
-    }
-
-    private var isPhoneNumberValid: Observable<Bool> {
-        return phoneNumber.asObservable().map { $0.count > 6 }
-    }
-
-    private var isEmailValid: Observable<Bool> {
-        return email.asObservable().map { $0.count > 6 }
-    }
-
-    var isValidAll: Observable<Bool> {
-        return Observable.combineLatest(isFirstnameValid,
-                                        isLastnameValid,
-                                        isPhoneNumberValid,
-                                        isEmailValid) { $0 && $1 && $2 && $3 }
-    }
-
+    
+    // MARK: - Private functions
+    
     private func updateCreateContact() {
         switch taskMode {
         case .create:
@@ -102,7 +120,7 @@ final class ContactEditCreateViewModel {
             break
         }
     }
-
+    
     private func createContact() {
         isLoading.accept(true)
         contactProvider.request(.contactCreate(firstName: firstName.value,
@@ -111,28 +129,27 @@ final class ContactEditCreateViewModel {
                                                phoneNumber: phoneNumber.value,
                                                favorite: favorite.value),
                                 completion: { result in
-            self.isLoading.accept(false)
-
-            if case let .success(response) = result {
-                do {
-                    let filteredResponse = try response.filterSuccessfulStatusCodes()
-
-                    let json = JSON(filteredResponse.data)
-                    let contact = Contact(fromJson: json)
-                    self.isSuccess.onNext((contact, true))
-
-                } catch {
-                    self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
-                }
-            } else {
-                self.alertMessage.onNext(AlertMessage(title: result.error?.errorDescription, message: ""))
-            }
+                                    self.isLoading.accept(false)
+                                    
+                                    if case let .success(response) = result {
+                                        do {
+                                            let filteredResponse = try response.filterSuccessfulStatusCodes()
+                                            
+                                            let json = JSON(filteredResponse.data)
+                                            let contact = Contact(fromJson: json)
+                                            self.isAddSuccess.onNext((contact, true))
+                                        } catch {
+                                            self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
+                                        }
+                                    } else {
+                                        self.alertMessage.onNext(AlertMessage(title: result.error?.errorDescription, message: ""))
+                                    }
         })
     }
-
+    
     private func updateContact() {
         isLoading.accept(true)
-
+        
         contactProvider.request(.contactUpdate(url: url,
                                                firstName: firstName.value,
                                                lastName: lastName.value,
@@ -140,22 +157,23 @@ final class ContactEditCreateViewModel {
                                                phoneNumber: phoneNumber.value,
                                                favorite: favorite.value),
                                 completion: { result in
-            self.isLoading.accept(false)
-
-            if case let .success(response) = result {
-                do {
-                    let filteredResponse = try response.filterSuccessfulStatusCodes()
-
-                    let json = JSON(filteredResponse.data)
-                    let contact = Contact(fromJson: json)
-                    self.isSuccess.onNext((contact, true))
-
-                } catch {
-                    self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
-                }
-            } else {
-                self.alertMessage.onNext(AlertMessage(title: result.error?.errorDescription, message: ""))
-            }
+                                    self.isLoading.accept(false)
+                                    
+                                    if case let .success(response) = result {
+                                        do {
+                                            let filteredResponse = try response.filterSuccessfulStatusCodes()
+                                            
+                                            let json = JSON(filteredResponse.data)
+                                            var contact = Contact(fromJson: json)
+                                            contact.url = self.url
+                                            self.isEditSuccess.onNext((contact, true))
+                                            
+                                        } catch {
+                                            self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
+                                        }
+                                    } else {
+                                        self.alertMessage.onNext(AlertMessage(title: result.error?.errorDescription, message: ""))
+                                    }
         })
     }
 }

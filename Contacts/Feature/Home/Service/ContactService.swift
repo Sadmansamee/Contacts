@@ -12,9 +12,9 @@ public enum ContactService {
     case contacts
     case contactDetail(url: String)
     case contactCreate(firstName: String, lastName: String, email: String,
-        phoneNumber: String, favorite: Bool)
+                       phoneNumber: String, favorite: Bool)
     case contactUpdate(url: String, firstName: String, lastName: String,
-        email: String, phoneNumber: String, favorite: Bool)
+                       email: String, phoneNumber: String, favorite: Bool)
     case contactDelete(url: String)
 }
 

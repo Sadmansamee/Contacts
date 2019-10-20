@@ -31,6 +31,16 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
     var loadingView: UIActivityIndicatorView!
     var dataSource: RxTableViewSectionedReloadDataSource<ContactGroup>?
 
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(ContactsVC.handleRefresh(_:)),
+                                 for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = .paste
+
+        return refreshControl
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -39,20 +49,45 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
         setUpTableView()
         bindViewModel()
         viewModelCallbacks()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(onUpdateContact(_:)), name: .didContactUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onAddContact(_:)), name: .didContactAdded, object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Private functions
 
+    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
+        viewModel.fetchContacts()
+        refreshControl.endRefreshing()
+    }
+
     private func setUI() {
         title = "Contact"
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "add.png")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "add.png")
             .withRenderingMode(.alwaysOriginal), style: .plain,
-                                                 target: self,
-                                                 action: #selector(actionAddContact(_:)))
+                                                            target: self,
+                                                            action: #selector(actionAddContact(_:)))
+        tableView.addSubview(refreshControl)
     }
 
-    func viewModelCallbacks() {
+    @objc func onUpdateContact(_ notification: Notification) {
+        if let dictionary = notification.userInfo as? [String: Any] {
+            viewModel.contactUpdated(dictionary: dictionary)
+        }
+    }
+
+    @objc func onAddContact(_ notification: Notification) {
+        if let dictionary = notification.userInfo as? [String: Any] {
+            viewModel.contactAdded(dictionary: dictionary)
+        }
+    }
+
+    private func viewModelCallbacks() {
         viewModel.onAlertMessage
             .map { [weak self] in
                 self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
@@ -72,7 +107,7 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
     }
 
     private func bindViewModel() {
-        viewModel.fetchContactss()
+        viewModel.fetchContacts()
     }
 
     private func setLoadingView() {
@@ -114,7 +149,7 @@ extension ContactsVC {
         tableView.register(ContactTableViewCell.nib, forCellReuseIdentifier: ContactTableViewCell.id)
 
         let dataSource = RxTableViewSectionedReloadDataSource<ContactGroup>(
-            configureCell: {  _, tableView, _, item in
+            configureCell: { _, tableView, _, item in
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id)
                     as? ContactTableViewCell else {
                     return UITableViewCell()
@@ -157,19 +192,6 @@ extension ContactsVC {
 //                    return cell
 //                }.disposed(by: disposeBag)
 
-        // For pagination
-        //        tableView.rx.contentOffset
-        //            .flatMap { [weak self] edge in
-        //                self?.tableView.isNearBottomEdge(edgeOffset: 250.0) ?? false
-        //                    ? Observable.just(())
-        //                    : Observable.empty()
-        //        }.asObservable()
-        //            //.take(1)
-        //            //.debounce(DispatchTimeInterval.seconds(1), scheduler: MainScheduler.instance)
-        //            .subscribe { [weak self] edge in
-        //                print("edge \(edge.element)")
-        //                self?.viewModel.fetchContactss(isLoadingMore: true)
-        //        }.disposed(by: disposeBag)
 
         // setting delegate
         tableView.rx.setDelegate(self)

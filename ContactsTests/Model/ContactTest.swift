@@ -18,11 +18,11 @@ import SwiftyJSON
 
 class ContactTest: QuickSpec {
     override func spec() {
-        describe("ContactsTest") {
+        describe("ContactTest") {
             var json: JSON!
 
             beforeEach {
-                if let path = Bundle.main.path(forResource: MockJson.Contacts.rawValue, ofType: "json") {
+                if let path = Bundle.main.path(forResource: MockJson.contact.rawValue, ofType: "json") {
                     let url = URL(fileURLWithPath: path)
                     json = try? JSON(data: Data(contentsOf: url))
                 }
@@ -30,12 +30,12 @@ class ContactTest: QuickSpec {
             context("Model From Json") {
                 var sut: Contacts!
                 beforeEach {
-                    sut = Contacts(fromJson: json)
+                    sut = Contact(fromJson: json)
                 }
 
                 it("Data is valid") {
                     expect(sut).toNot(beNil())
-                    expect(sut?.title).toNot(beNil())
+                    expect(sut?.firstName).toNot(beNil())
                 }
             }
         }

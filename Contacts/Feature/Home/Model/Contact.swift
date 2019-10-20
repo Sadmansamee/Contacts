@@ -27,8 +27,42 @@ struct Contact {
         id = json["id"].intValue
         lastName = json["last_name"].stringValue
         profilePic = json["profile_pic"].stringValue
-        url = json["url"].stringValue
+        if let url = json["url"].string {
+            self.url = url
+        }
         email = json["email"].stringValue
         phoneNumber = json["phone_number"].stringValue
+    }
+
+    func toDictionary() -> [String: Any] {
+        var dictionary = [String: Any]()
+
+        if email != nil {
+            dictionary["email"] = email
+        }
+        if favorite != nil {
+            dictionary["favorite"] = favorite
+        }
+        if firstName != nil {
+            dictionary["first_name"] = firstName
+        }
+        if id != nil {
+            dictionary["id"] = id
+        }
+        if lastName != nil {
+            dictionary["last_name"] = lastName
+        }
+        if phoneNumber != nil {
+            dictionary["phone_number"] = phoneNumber
+        }
+        if profilePic != nil {
+            dictionary["profile_pic"] = profilePic
+        }
+
+        if url != nil {
+            dictionary["url"] = url
+        }
+
+        return dictionary
     }
 }

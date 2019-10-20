@@ -15,7 +15,8 @@ target 'Contacts' do
   pod 'RxDataSources', '~> 4.0'
   pod 'Swinject' , '~> 2.7.1'
   pod 'SwinjectStoryboard', '~> 2.2.0'
-
+  pod 'IQKeyboardManager'
+  
   target 'ContactsTests' do
     inherit! :search_paths
     # Pods for testing

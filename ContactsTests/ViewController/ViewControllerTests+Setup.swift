@@ -18,6 +18,7 @@ extension ViewControllerTest {
     func setupDependencies() -> Container {
         let container = Container()
 
+     
         container.register(MoyaProvider<ContactService>.self, factory: { _ in
             MoyaProvider<ContactService>()
         }).inObjectScope(ObjectScope.container)
@@ -25,13 +26,24 @@ extension ViewControllerTest {
         // MARK: - View Model
 
         container.register(ContactsViewModel.self, factory: { container in
+            ContactsViewModel(contactProvider: container.resolve(MoyaProvider<ContactService>.self)!)
+        }).inObjectScope(ObjectScope.container)
 
-            ContactsViewModel(homeProvider: container.resolve(MoyaProvider<ContactService>.self)!)
+        container.register(ContactEditCreateViewModel.self, factory: { container in
+            ContactEditCreateViewModel(contactProvider: container.resolve(MoyaProvider<ContactService>.self)!)
         }).inObjectScope(ObjectScope.container)
 
         // MARK: - View Controllers
+
         container.storyboardInitCompleted(ContactsVC.self) { resolver, controller in
             controller.viewModel = resolver.resolve(ContactsViewModel.self)
+        }
+
+        container.storyboardInitCompleted(ContactDetailVC.self) { _, _ in
+        }
+
+        container.storyboardInitCompleted(ContactEditCreateVC.self) { resolver, controller in
+            controller.viewModel = resolver.resolve(ContactEditCreateViewModel.self)
         }
 
         return container

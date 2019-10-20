@@ -16,23 +16,22 @@ import RxTest
 
 @testable import Contacts
 
-class HomeVMTests: QuickSpec {
+class ContactsViewModelTests: QuickSpec {
     override func spec() {
         describe("HomeVMTests") {
 
-            var stubbingProvider: MoyaProvider<HomeService>!
-            var sut: HomeVM!
+            var stubbingProvider: MoyaProvider<ContactService>!
+            var sut: ContactsViewModel!
 
             beforeEach {
 
-                stubbingProvider = MoyaProvider<HomeService>(stubClosure: MoyaProvider.immediatelyStub)
-                sut = HomeVM(homeProvider: stubbingProvider)
-                sut.fetchContactss()
+                stubbingProvider = MoyaProvider<ContactService>(stubClosure: MoyaProvider.immediatelyStub)
+                sut = ContactsViewModel(homeProvider: stubbingProvider)
+                sut.fetchContacts()
             }
             context("when initialized and data count is 10") {
                 it("should load Contactss") {
                     let items = try! sut.cells.toBlocking().first()
-                    expect(items?.count) == 10
                     expect(items?.count).toEventually(beGreaterThanOrEqualTo(10), timeout: 5)
                 }
 
