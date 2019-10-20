@@ -37,29 +37,42 @@ final class ContactsViewModel {
     init(contactProvider: MoyaProvider<ContactService>) {
         self.contactProvider = contactProvider
     }
+    
+    func contactDeleted(dictionary: [String: Any]) {
+          let json = JSON(dictionary)
+          let contact = Contact(fromJson: json)
+
+          var oldValue = contactViewModels.value
+
+          if let groupIndex = contactViewModels.value.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }), let index = contactViewModels.value[groupIndex].items.firstIndex(where: { $0.id == contact.id }) {
+            oldValue[groupIndex].items.remove(at: index)
+          }
+          contactViewModels.accept(oldValue)
+      }
+
 
     func contactUpdated(dictionary: [String: Any]) {
         let json = JSON(dictionary)
         let contact = Contact(fromJson: json)
 
-        // contactViewModels.value.filter { $0.header.elementsEqual(String(contact.firstName.first!))}.first?.items.filter { $0.id == contact.id }.first
+        var oldValue = contactViewModels.value
 
         if let groupIndex = contactViewModels.value.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }), let index = contactViewModels.value[groupIndex].items.firstIndex(where: { $0.id == contact.id }) {
-            // contactViewModels.value[groupIndex].items[index] = contact
+             oldValue[groupIndex].items[index] = contact
         }
-
-        // var value = contactViewModels.value.filter { $0.header.elementsEqual(String(contact.firstName.first!))}.first?.items.firstIndex { $0.id == contact.id }
+        contactViewModels.accept(oldValue)
     }
 
     func contactAdded(dictionary: [String: Any]) {
         let json = JSON(dictionary)
         let contact = Contact(fromJson: json)
 
-        let groupedContacts = Dictionary(grouping: [contact], by: { String($0.firstName.first!) })
-        let contactGroups = groupedContacts.map { ContactGroup(header: $0.0, items: $0.1) }
-            .sorted { $0.header < $1.header }
-
-        contactViewModels.accept(contactViewModels.value + contactGroups)
+        var oldValue = contactViewModels.value
+         
+        if let groupIndex = oldValue.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }) {
+            oldValue[groupIndex].items.append(contact)
+        }
+        contactViewModels.accept(oldValue)
     }
 
     func fetchContacts() {

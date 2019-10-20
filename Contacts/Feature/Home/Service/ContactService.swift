@@ -10,10 +10,10 @@ import Moya
 
 public enum ContactService {
     case contacts
-    case contactDetail(url: String)
+    case contactDetail(id: Int)
     case contactCreate(firstName: String, lastName: String, email: String,
                        phoneNumber: String, favorite: Bool)
-    case contactUpdate(url: String, firstName: String, lastName: String,
+    case contactUpdate(id: Int, firstName: String, lastName: String,
                        email: String, phoneNumber: String, favorite: Bool)
     case contactDelete(url: String)
 }
@@ -21,7 +21,7 @@ public enum ContactService {
 extension ContactService: TargetType {
     public var baseURL: URL {
         switch self {
-        case let .contactDetail(url), let .contactDelete(url), let .contactUpdate(url, _, _, _, _, _):
+        case  let .contactDelete(url):
             return URL(string: url)!
         default:
             return URL(string: Constant.Url.base)!
@@ -32,7 +32,9 @@ extension ContactService: TargetType {
         switch self {
         case .contacts, .contactCreate:
             return "contacts.json"
-        case .contactDetail, .contactUpdate, .contactDelete:
+        case let .contactDetail(id), let .contactUpdate(id, _, _, _, _, _):
+            return "contacts/\(id).json"
+        case .contactDelete:
             return ""
         }
     }

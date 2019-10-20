@@ -52,6 +52,8 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
 
         NotificationCenter.default.addObserver(self, selector: #selector(onUpdateContact(_:)), name: .didContactUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onAddContact(_:)), name: .didContactAdded, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDeleteContact(_:)), name: .didContactDeleted, object: nil)
+
     }
 
     deinit {
@@ -86,6 +88,12 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
             viewModel.contactAdded(dictionary: dictionary)
         }
     }
+    
+    @objc func onDeleteContact(_ notification: Notification) {
+          if let dictionary = notification.userInfo as? [String: Any] {
+              viewModel.contactDeleted(dictionary: dictionary)
+          }
+      }
 
     private func viewModelCallbacks() {
         viewModel.onAlertMessage

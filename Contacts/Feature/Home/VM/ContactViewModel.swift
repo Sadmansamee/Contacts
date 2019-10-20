@@ -12,7 +12,7 @@ protocol ContactViewModel {
     var contactVM: Contact { get }
     var name: String { get }
     var isFavorite: Bool { get }
-    var profilePicVM: String { get }
+    var profilePicUrl: String { get }
     var emailVM: String { get }
     var phoneNumberVM: String { get }
 }
@@ -26,7 +26,7 @@ extension Contact: ContactViewModel {
         phoneNumber
     }
 
-    var profilePicVM: String {
+    var profilePicUrl: String {
         Constant.Url.base + profilePic
     }
 

@@ -13,7 +13,7 @@ import RxRelay
 import RxSwift
 import SwiftyJSON
 
-final class ContactsDetailVM {
+final class ContactDetailViewModel {
     // MARK: - Properties
 
     var contactProvider: MoyaProvider<ContactService>
@@ -22,7 +22,7 @@ final class ContactsDetailVM {
     private let isLoading = BehaviorRelay(value: false)
     private let alertMessage = PublishSubject<AlertMessage>()
     private let contactViewModel = PublishSubject<ContactViewModel>()
-    private let isDeleted = PublishSubject<Bool>()
+    private let isDeleted = PublishSubject<(ContactViewModel, Bool)>()
     let deleteButtonTapped = PublishSubject<Void>()
 
     var onLoading: Observable<Bool> {
@@ -30,7 +30,7 @@ final class ContactsDetailVM {
             .distinctUntilChanged()
     }
 
-    var onDelete: Observable<Bool> {
+    var onDelete: Observable<(ContactViewModel, Bool)> {
         isDeleted.asObservable()
     }
 
@@ -47,13 +47,15 @@ final class ContactsDetailVM {
     init(contactProvider: MoyaProvider<ContactService>, viewModel: ContactViewModel) {
         self.contactProvider = contactProvider
         contactViewModel.onNext(viewModel)
-        if let url = viewModel.contactVM.url{
-            fetchContactDetail(url: url)
-        }
+        
+        fetchContactDetail(viewModel: viewModel)
+        
         deleteButtonTapped.asObserver()
             .subscribe(onNext: { [weak self] in
-                self?.deleteContact(url: viewModel.contactVM.url)
+                self?.deleteContact(viewModel: viewModel)
             }).disposed(by: disposeBag)
+        
+       
     }
 
     func contactUpdated(dictionary: [String: Any]) {
@@ -64,10 +66,10 @@ final class ContactsDetailVM {
 
     // MARK: - FUNCTIONS
 
-    private func fetchContactDetail(url: String) {
+    private func fetchContactDetail(viewModel: ContactViewModel) {
         isLoading.accept(true)
 
-        contactProvider.request(.contactDetail(url: url), completion: { result in
+        contactProvider.request(.contactDetail(id: viewModel.contactVM.id), completion: { result in
             self.isLoading.accept(false)
 
             if case let .success(response) = result {
@@ -76,7 +78,7 @@ final class ContactsDetailVM {
 
                     let json = JSON(filteredResponse.data)
                     var contact = Contact(fromJson: json)
-                    contact.url = url
+                    contact.url = viewModel.contactVM.url
                     self.contactViewModel.onNext(contact)
 
                 } catch {
@@ -88,10 +90,10 @@ final class ContactsDetailVM {
         })
     }
 
-    func deleteContact(url: String) {
+    func deleteContact(viewModel: ContactViewModel) {
         isLoading.accept(true)
 
-        contactProvider.request(.contactDelete(url: url), completion: { result in
+        contactProvider.request(.contactDelete(url: viewModel.contactVM.url), completion: { result in
             self.isLoading.accept(false)
 
             if case let .success(response) = result {
@@ -99,7 +101,7 @@ final class ContactsDetailVM {
                     // ON DELETE if deletion is successful there's no success message or anything so if 200 received taking it as successfull
                     // let filteredResponse = try response.filterSuccessfulStatusCodes()
                     // let json = JSON(filteredResponse.data)
-                    self.isDeleted.onNext(true)
+                    self.isDeleted.onNext((viewModel,true))
 
                 } catch {
                     self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))

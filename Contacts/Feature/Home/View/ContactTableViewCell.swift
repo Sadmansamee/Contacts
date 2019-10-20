@@ -33,7 +33,7 @@ class ContactTableViewCell: UITableViewCell {
             labelName.text = viewModel.name
             imageViewFavorite.isHidden = !viewModel.isFavorite
 
-            let url = URL(string: viewModel.profilePicVM)
+            let url = URL(string: viewModel.profilePicUrl)
             imageViewProfile.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder_photo"))
         }
     }

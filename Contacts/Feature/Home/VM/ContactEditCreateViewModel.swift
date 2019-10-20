@@ -25,10 +25,11 @@ final class ContactEditCreateViewModel {
     private let isLoading = BehaviorRelay(value: false)
     private let alertMessage = PublishSubject<AlertMessage>()
     private let contactViewModel = PublishSubject<ContactViewModel>()
-    private let isAddSuccess = PublishSubject<(ContactViewModel, Bool)>()
+    private let isCreateSuccess = PublishSubject<(ContactViewModel, Bool)>()
     private let isEditSuccess = PublishSubject<(ContactViewModel, Bool)>()
     
-    var url: String!
+    var id: Int!
+
     var email = BehaviorRelay<String>(value: "")
     var phoneNumber = BehaviorRelay<String>(value: "")
     var firstName = BehaviorRelay<String>(value: "")
@@ -38,8 +39,8 @@ final class ContactEditCreateViewModel {
     
     let doneButtonTapped = PublishSubject<Void>()
     
-    var onAddSuccess: Observable<(ContactViewModel, Bool)> {
-        isAddSuccess.asObservable()
+    var onCreateSuccess: Observable<(ContactViewModel, Bool)> {
+        isCreateSuccess.asObservable()
     }
     
     var onEditSuccess: Observable<(ContactViewModel, Bool)> {
@@ -97,8 +98,8 @@ final class ContactEditCreateViewModel {
             firstName.accept(contactViewModel.contactVM.firstName)
             lastName.accept(contactViewModel.contactVM.lastName)
             favorite.accept(contactViewModel.contactVM.favorite)
-            url = contactViewModel.contactVM.url
-            imageUrl.accept(contactViewModel.contactVM.profilePicVM)
+            id = contactViewModel.contactVM.id
+            imageUrl.accept(contactViewModel.contactVM.profilePicUrl)
             taskMode = .update
         }
         
@@ -137,7 +138,7 @@ final class ContactEditCreateViewModel {
                                             
                                             let json = JSON(filteredResponse.data)
                                             let contact = Contact(fromJson: json)
-                                            self.isAddSuccess.onNext((contact, true))
+                                            self.isCreateSuccess.onNext((contact, true))
                                         } catch {
                                             self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
                                         }
@@ -150,7 +151,7 @@ final class ContactEditCreateViewModel {
     private func updateContact() {
         isLoading.accept(true)
         
-        contactProvider.request(.contactUpdate(url: url,
+        contactProvider.request(.contactUpdate(id: id,
                                                firstName: firstName.value,
                                                lastName: lastName.value,
                                                email: email.value,
@@ -165,7 +166,7 @@ final class ContactEditCreateViewModel {
                                             
                                             let json = JSON(filteredResponse.data)
                                             var contact = Contact(fromJson: json)
-                                            contact.url = self.url
+                                            //contact.url = self.url
                                             self.isEditSuccess.onNext((contact, true))
                                             
                                         } catch {

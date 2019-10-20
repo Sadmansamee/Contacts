@@ -15,6 +15,7 @@ struct Contact {
     var email: String!
     var phoneNumber: String!
 
+    
     /**
      * Instantiate the instance using the passed json values to set the properties values
      */

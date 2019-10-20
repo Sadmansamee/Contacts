@@ -18,7 +18,7 @@ extension AppDelegate {
         // MARK: - Providers
 
         container.register(MoyaProvider<ContactService>.self, factory: { _ in
-            MoyaProvider<ContactService>()
+            MoyaProvider<ContactService>(plugins: [NetworkLoggerPlugin(verbose: true, responseDataFormatter: JSONResponseDataFormatter)])
         }).inObjectScope(ObjectScope.container)
 
         // MARK: - View Model

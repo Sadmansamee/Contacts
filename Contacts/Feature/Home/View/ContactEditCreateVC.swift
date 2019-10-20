@@ -12,14 +12,12 @@ import UIKit
 
 protocol ContactEditCreateVCProtocol: AnyObject {
     var onBack: (() -> Void)? { get set }
-    var onSuccess: ((ContactViewModel) -> Void)? { get set }
 }
 
 class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, ContactEditCreateVCProtocol {
     // MARK: - ContactEditCreateVCProtocol
     
     var onBack: (() -> Void)?
-    var onSuccess: ((ContactViewModel) -> Void)?
     
     private var disposeBag = DisposeBag()
     
@@ -86,11 +84,10 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
         .subscribe()
         .disposed(by: disposeBag)
         
-        viewModel.onAddSuccess
+        viewModel.onCreateSuccess
             .map { [weak self] in
                 if $0.1 {
                     NotificationCenter.default.post(name: .didContactAdded, object: nil, userInfo: $0.0.contactVM.toDictionary())
-                    self?.onSuccess?($0.0)
                     self?.onBack?()
                 }
         }.subscribe()
@@ -100,7 +97,6 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
             .map { [weak self] in
                 if $0.1 {
                     NotificationCenter.default.post(name: .didContactUpdated, object: nil, userInfo: $0.0.contactVM.toDictionary())
-                    self?.onSuccess?($0.0)
                     self?.onBack?()
                 }
         }.subscribe()

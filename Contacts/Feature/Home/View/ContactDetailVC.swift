@@ -24,7 +24,7 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
 
     // MARK: - Properties
 
-    var viewModel: ContactsDetailVM!
+    var viewModel: ContactDetailViewModel!
     private var disposeBag = DisposeBag()
 
     @IBOutlet var headerCell: UITableViewCell!
@@ -69,7 +69,8 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
     func viewModelCallbacks() {
         viewModel.onDelete
             .map { [weak self] in
-                if $0 {
+                if $0.1 {
+                    NotificationCenter.default.post(name: .didContactDeleted, object: nil, userInfo: $0.0.contactVM.toDictionary())
                     self?.onBack?()
                 }
             }.subscribe()
@@ -129,7 +130,7 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
 
     private func setContactDetailUI(contactViewModel: ContactViewModel) {
         self.contactViewModel = contactViewModel
-        imageViewProfile.kf.setImage(with: URL(string: contactViewModel.profilePicVM), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
+        imageViewProfile.kf.setImage(with: URL(string: contactViewModel.profilePicUrl), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
         labelName.text = contactViewModel.name
 
         labelEmail.text = contactViewModel.emailVM

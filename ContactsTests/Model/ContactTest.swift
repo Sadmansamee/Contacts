@@ -28,7 +28,10 @@ class ContactTest: QuickSpec {
                 }
             }
             context("Model From Json") {
-                var sut: Contacts!
+                var sut: Contact!
+                afterEach {
+                      sut = nil
+                }
                 beforeEach {
                     sut = Contact(fromJson: json)
                 }
@@ -36,6 +39,10 @@ class ContactTest: QuickSpec {
                 it("Data is valid") {
                     expect(sut).toNot(beNil())
                     expect(sut?.firstName).toNot(beNil())
+                    expect(sut?.firstName).to(equal("Alexaaaaaa"))
+                    expect(sut?.url).toNot(beNil())
+                    expect(sut?.profilePic).toNot(beNil())
+
                 }
             }
         }

@@ -39,7 +39,7 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
         let viewController = container.resolveViewController(ContactsVC.self)
         viewController.onContactSelected = { viewModel in
             self.showContactsDetailVC(viewModel:
-                ContactsDetailVM(contactProvider: self.container.resolve(MoyaProvider<ContactService>.self)!,
+                ContactDetailViewModel(contactProvider: self.container.resolve(MoyaProvider<ContactService>.self)!,
                                  viewModel: viewModel))
         }
         viewController.onAddContact = { [unowned self] in
@@ -48,7 +48,7 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
         navigationController.pushViewController(viewController, animated: true)
     }
 
-    private func showContactsDetailVC(viewModel: ContactsDetailVM) {
+    private func showContactsDetailVC(viewModel: ContactDetailViewModel) {
         let viewController = container.resolveViewController(ContactDetailVC.self)
         viewController.onBack = { [unowned self] in
             self.navigationController.popViewController(animated: true)
@@ -68,8 +68,7 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
         viewController.onBack = { [unowned self] in
             self.navigationController.dismiss(animated: true, completion: nil)
         }
-        viewController.onSuccess = { _ in
-        }
+      
         viewController.viewModel = viewModel
         navigationController.present(viewController, animated: true, completion: nil)
     }
@@ -78,8 +77,6 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
         let viewController = container.resolveViewController(ContactEditCreateVC.self)
         viewController.onBack = { [unowned self] in
             self.navigationController.dismiss(animated: true, completion: nil)
-        }
-        viewController.onSuccess = { _ in
         }
 
         navigationController.present(viewController, animated: true, completion: nil)

@@ -18,10 +18,10 @@ class ViewControllerTest: QuickSpec {
     override func spec() {
         let container = setupDependencies()
 
-        describe("HomeVC") {
+        describe("ContactsVC") {
             describe("viewDidLoad") {
                 let vc = LeakTest {
-                    container.resolveViewController(HomeVC.self)
+                    container.resolveViewController(ContactsVC.self)
                 }
 
                 it("must not leak") {
@@ -29,5 +29,29 @@ class ViewControllerTest: QuickSpec {
                 }
             }
         }
+        
+        describe("ContactDetailVC") {
+                 describe("viewDidLoad") {
+                     let vc = LeakTest {
+                         container.resolveViewController(ContactDetailVC.self)
+                     }
+
+                     it("must not leak") {
+                         expect(vc).toNot(leak())
+                     }
+                 }
+             }
+        
+        describe("ContactEditCreateVC") {
+                 describe("viewDidLoad") {
+                     let vc = LeakTest {
+                         container.resolveViewController(ContactEditCreateVC.self)
+                     }
+
+                     it("must not leak") {
+                         expect(vc).toNot(leak())
+                     }
+                 }
+             }
     }
 }
