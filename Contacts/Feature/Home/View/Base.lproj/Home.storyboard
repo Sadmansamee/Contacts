@@ -331,31 +331,35 @@
                                                         <constraint firstAttribute="width" constant="42" id="nyq-Rc-oNP"/>
                                                     </constraints>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cS-6m-3Db">
-                                                    <rect key="frame" x="20" y="8" width="48" height="30"/>
-                                                    <state key="normal" title="Cancel">
-                                                        <color key="titleColor" red="0.35380139946937561" green="0.9044615626335144" blue="0.78859633207321167" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="actionCancel:" destination="CRn-vF-tpY" eventType="touchUpInside" id="bam-uE-ybn"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HZy-Dz-Ez8">
-                                                    <rect key="frame" x="357" y="8" width="37" height="30"/>
-                                                    <state key="normal" title="Done">
-                                                        <color key="titleColor" red="0.35380139946937561" green="0.9044615626335144" blue="0.78859633207321167" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </state>
-                                                </button>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="3Is-EE-mgl">
+                                                    <rect key="frame" x="20" y="8" width="374" height="30"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cS-6m-3Db">
+                                                            <rect key="frame" x="0.0" y="0.0" width="187" height="30"/>
+                                                            <state key="normal" title="Cancel">
+                                                                <color key="titleColor" red="0.35380139946937561" green="0.9044615626335144" blue="0.78859633207321167" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="actionCancel:" destination="CRn-vF-tpY" eventType="touchUpInside" id="bam-uE-ybn"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HZy-Dz-Ez8">
+                                                            <rect key="frame" x="187" y="0.0" width="187" height="30"/>
+                                                            <state key="normal" title="Done">
+                                                                <color key="titleColor" red="0.35380139946937561" green="0.9044615626335144" blue="0.78859633207321167" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </state>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="qhI-mK-VcJ" firstAttribute="centerX" secondItem="5pg-32-ZLs" secondAttribute="centerX" id="1E2-G0-JDo"/>
-                                                <constraint firstAttribute="trailing" secondItem="HZy-Dz-Ez8" secondAttribute="trailing" constant="20" id="8Qf-wc-AhW"/>
+                                                <constraint firstItem="3Is-EE-mgl" firstAttribute="top" secondItem="5pg-32-ZLs" secondAttribute="top" constant="8" id="BCJ-xl-lIR"/>
                                                 <constraint firstItem="qhI-mK-VcJ" firstAttribute="top" secondItem="5pg-32-ZLs" secondAttribute="top" constant="58" id="BpS-KE-fm6"/>
-                                                <constraint firstItem="3cS-6m-3Db" firstAttribute="top" secondItem="5pg-32-ZLs" secondAttribute="top" constant="8" id="ESx-gr-TBl"/>
-                                                <constraint firstItem="3cS-6m-3Db" firstAttribute="leading" secondItem="5pg-32-ZLs" secondAttribute="leading" constant="20" id="PMo-Eh-FcQ"/>
+                                                <constraint firstAttribute="trailing" secondItem="3Is-EE-mgl" secondAttribute="trailing" constant="20" id="Hkr-Dr-0SR"/>
                                                 <constraint firstItem="ACX-cj-hfX" firstAttribute="top" secondItem="qhI-mK-VcJ" secondAttribute="bottom" constant="-45" id="Vfa-mp-yz9"/>
-                                                <constraint firstItem="HZy-Dz-Ez8" firstAttribute="top" secondItem="5pg-32-ZLs" secondAttribute="top" constant="8" id="dhi-q7-uU9"/>
                                                 <constraint firstItem="ACX-cj-hfX" firstAttribute="leading" secondItem="qhI-mK-VcJ" secondAttribute="trailing" constant="-43" id="mXx-su-Ece"/>
+                                                <constraint firstItem="3Is-EE-mgl" firstAttribute="leading" secondItem="5pg-32-ZLs" secondAttribute="leading" constant="20" id="pZj-tG-Acn"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.97931915520000001" green="0.9800599217" blue="0.9794338346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
