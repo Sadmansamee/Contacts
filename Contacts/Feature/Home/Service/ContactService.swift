@@ -15,27 +15,28 @@ public enum ContactService {
                        phoneNumber: String, favorite: Bool)
     case contactUpdate(id: Int, firstName: String, lastName: String,
                        email: String, phoneNumber: String, favorite: Bool)
-    case contactDelete(url: String)
+    case contactDelete(id: Int)
 }
 
 extension ContactService: TargetType {
     public var baseURL: URL {
-        switch self {
-        case  let .contactDelete(url):
-            return URL(string: url)!
-        default:
-            return URL(string: Constant.Url.base)!
-        }
+        return URL(string: Constant.Url.base)!
+//        switch self {
+//        case  let .contactDelete(url):
+//            return URL(string: url)!
+//        default:
+//            return URL(string: Constant.Url.base)!
+//        }
     }
 
     public var path: String {
         switch self {
         case .contacts, .contactCreate:
             return "contacts.json"
-        case let .contactDetail(id), let .contactUpdate(id, _, _, _, _, _):
+        case let .contactDetail(id), let .contactUpdate(id, _, _, _, _, _), let .contactDelete(id):
             return "contacts/\(id).json"
-        case .contactDelete:
-            return ""
+//        case .contactDelete:
+//            return ""
         }
     }
 

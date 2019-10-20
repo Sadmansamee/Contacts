@@ -16,18 +16,18 @@ final class ContactEditCreateViewModel {
         case update
         case create
     }
-    
+
     // MARK: - Properties
     var contactProvider: MoyaProvider<ContactService>
     let disposeBag = DisposeBag()
     private var taskMode: TaskMode!
-    
+
     private let isLoading = BehaviorRelay(value: false)
     private let alertMessage = PublishSubject<AlertMessage>()
     private let contactViewModel = PublishSubject<ContactViewModel>()
     private let isCreateSuccess = PublishSubject<(ContactViewModel, Bool)>()
     private let isEditSuccess = PublishSubject<(ContactViewModel, Bool)>()
-    
+
     var id: Int!
 
     var email = BehaviorRelay<String>(value: "")
@@ -36,62 +36,62 @@ final class ContactEditCreateViewModel {
     private var imageUrl = BehaviorRelay<String>(value: "")
     var lastName = BehaviorRelay<String>(value: "")
     var favorite = BehaviorRelay<Bool>(value: false)
-    
+
     let doneButtonTapped = PublishSubject<Void>()
-    
+
     var onCreateSuccess: Observable<(ContactViewModel, Bool)> {
         isCreateSuccess.asObservable()
     }
-    
+
     var onEditSuccess: Observable<(ContactViewModel, Bool)> {
         isEditSuccess.asObservable()
     }
-    
+
     var onLoading: Observable<Bool> {
         isLoading.asObservable()
             .distinctUntilChanged()
     }
-    
+
     var onImageUrl: Observable<String> {
         imageUrl.asObservable()
             .distinctUntilChanged()
     }
-    
+
     var onAlertMessage: Observable<AlertMessage> {
         alertMessage.asObservable()
     }
-    
+
     // MARK: - Validation
-    
+
     private var isFirstnameValid: Observable<Bool> {
         return firstName.asObservable().map { $0.count > 3 }
     }
-    
+
     private var isLastnameValid: Observable<Bool> {
         return lastName.asObservable().map { $0.count > 3 }
     }
-    
+
     private var isPhoneNumberValid: Observable<Bool> {
         return phoneNumber.asObservable().map { $0.count > 6 }
     }
-    
+
     private var isEmailValid: Observable<Bool> {
         return email.asObservable().map { $0.count > 6 && $0.isvalidEmail }
     }
-    
+
     var isValidAll: Observable<Bool> {
         return Observable.combineLatest(isFirstnameValid,
                                         isLastnameValid,
                                         isPhoneNumberValid,
                                         isEmailValid) { $0 && $1 && $2 && $3 }
     }
-    
+
     // MARK: - INIT
-    
+
     init(contactProvider: MoyaProvider<ContactService>, viewModel: ContactViewModel? = nil) {
         self.contactProvider = contactProvider
         taskMode = .create
-        
+
         if let contactViewModel = viewModel {
             email.accept(contactViewModel.contactVM.email)
             phoneNumber.accept(contactViewModel.contactVM.phoneNumber)
@@ -102,15 +102,15 @@ final class ContactEditCreateViewModel {
             imageUrl.accept(contactViewModel.contactVM.profilePicUrl)
             taskMode = .update
         }
-        
+
         doneButtonTapped.asObserver()
             .subscribe(onNext: { [weak self] in
                 self?.updateCreateContact()
             }).disposed(by: disposeBag)
     }
-    
+
     // MARK: - Private functions
-    
+
     private func updateCreateContact() {
         switch taskMode {
         case .create:
@@ -121,7 +121,7 @@ final class ContactEditCreateViewModel {
             break
         }
     }
-    
+
     private func createContact() {
         isLoading.accept(true)
         contactProvider.request(.contactCreate(firstName: firstName.value,
@@ -131,11 +131,11 @@ final class ContactEditCreateViewModel {
                                                favorite: favorite.value),
                                 completion: { result in
                                     self.isLoading.accept(false)
-                                    
+
                                     if case let .success(response) = result {
                                         do {
                                             let filteredResponse = try response.filterSuccessfulStatusCodes()
-                                            
+
                                             let json = JSON(filteredResponse.data)
                                             let contact = Contact(fromJson: json)
                                             self.isCreateSuccess.onNext((contact, true))
@@ -147,10 +147,10 @@ final class ContactEditCreateViewModel {
                                     }
         })
     }
-    
+
     private func updateContact() {
         isLoading.accept(true)
-        
+
         contactProvider.request(.contactUpdate(id: id,
                                                firstName: firstName.value,
                                                lastName: lastName.value,
@@ -159,16 +159,16 @@ final class ContactEditCreateViewModel {
                                                favorite: favorite.value),
                                 completion: { result in
                                     self.isLoading.accept(false)
-                                    
+
                                     if case let .success(response) = result {
                                         do {
                                             let filteredResponse = try response.filterSuccessfulStatusCodes()
-                                            
+
                                             let json = JSON(filteredResponse.data)
-                                            var contact = Contact(fromJson: json)
+                                            let contact = Contact(fromJson: json)
                                             //contact.url = self.url
                                             self.isEditSuccess.onNext((contact, true))
-                                            
+
                                         } catch {
                                             self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
                                         }

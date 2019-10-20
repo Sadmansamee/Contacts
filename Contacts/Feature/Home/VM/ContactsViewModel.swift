@@ -37,7 +37,7 @@ final class ContactsViewModel {
     init(contactProvider: MoyaProvider<ContactService>) {
         self.contactProvider = contactProvider
     }
-    
+
     func contactDeleted(dictionary: [String: Any]) {
           let json = JSON(dictionary)
           let contact = Contact(fromJson: json)
@@ -49,7 +49,6 @@ final class ContactsViewModel {
           }
           contactViewModels.accept(oldValue)
       }
-
 
     func contactUpdated(dictionary: [String: Any]) {
         let json = JSON(dictionary)
@@ -68,7 +67,7 @@ final class ContactsViewModel {
         let contact = Contact(fromJson: json)
 
         var oldValue = contactViewModels.value
-         
+
         if let groupIndex = oldValue.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }) {
             oldValue[groupIndex].items.append(contact)
         }

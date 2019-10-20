@@ -26,10 +26,10 @@ class ContactEditCreateViewModelTest: QuickSpec {
         
         describe("ContactEditCreateViewModelTest Edit") {
             var sut: ContactEditCreateViewModel!
-
+            
             afterEach {
-                       sut = nil
-                 }
+                sut = nil
+            }
             beforeEach {
                 let path = Bundle.main.path(forResource: MockJson.contact.rawValue, ofType: "json")!
                 let json = try! JSON(data: Data(contentsOf: URL(fileURLWithPath: path), options: .alwaysMapped))
@@ -40,11 +40,15 @@ class ContactEditCreateViewModelTest: QuickSpec {
             context("when initialized and data is okhay") {
                 
                 it("Editing Contact is Successfull"){
-                
+                    
                     sut.onEditSuccess.asObservable().debug().subscribe({ result in
-                                                expect(result.element?.1).to(beTrue())
-                                           }
-                                       ).disposed(by: disposeBag)
+                        expect(result.element?.1).to(beTrue())
+                        }
+                    ).disposed(by: disposeBag)
+                    
+                    sut.onAlertMessage.asObservable().debug().subscribe({  result in
+                                           expect(result.element).to(beNil())
+                                       }).disposed(by: disposeBag)
                     
                     sut.doneButtonTapped.onNext(())
                 }
@@ -54,53 +58,57 @@ class ContactEditCreateViewModelTest: QuickSpec {
         
         describe("ContactEditCreateViewModelTestCreate") {
             var sut: ContactEditCreateViewModel!
-
+            
             afterEach {
-                  sut = nil
+                sut = nil
             }
-                   beforeEach {
-                        stubbingProvider  = MoyaProvider<ContactService>(stubClosure: MoyaProvider.immediatelyStub)
-                        sut = ContactEditCreateViewModel(contactProvider: stubbingProvider)
-                   }
-                   
-                   context("when Creating contact should fail") {
+            beforeEach {
+                stubbingProvider  = MoyaProvider<ContactService>(stubClosure: MoyaProvider.immediatelyStub)
+                sut = ContactEditCreateViewModel(contactProvider: stubbingProvider)
+            }
+            
+            context("when Creating contact should fail") {
+                
+                
+                it("with empty data"){
                     
-
-                  it("with empty data"){
-                                                   
-                                      sut.onEditSuccess.asObservable().debug().subscribe({ result in
-                                                                  expect(result.element?.1).toNot(beTrue())
-                                                             }
-                                                         ).disposed(by: disposeBag)
+                    sut.onEditSuccess.asObservable().debug().subscribe({ result in
+                        expect(result.element?.1).toNot(beTrue())
+                        }
+                    ).disposed(by: disposeBag)
                     
                     sut.onAlertMessage.asObservable().debug().subscribe({  result in
                         expect(result.element).toNot(beNil())
-                        }).disposed(by: disposeBag)
+                    }).disposed(by: disposeBag)
                     
-                                      
-                                      sut.doneButtonTapped.onNext(())
-                                  }
-                   }
+                    
+                    sut.doneButtonTapped.onNext(())
+                }
+            }
             
             context("when Creating contact successfull") {
-                          
-
-                        it("Adding Contact should be Successfull"){
-                                                            sut.phoneNumber.accept("01670139638")
-                                                            sut.firstName.accept("sadman")
-                                                            sut.lastName.accept("samee")
-                                                            sut.email.accept("sadman.dd@fm.dd")
-                                                            sut.favorite.accept(true)
-                                        
-                                            sut.onEditSuccess.asObservable().debug().subscribe({ result in
-                                                                        expect(result.element?.1).to(beTrue())
-                                                                   }
-                                                               ).disposed(by: disposeBag)
-                                            
-                                            sut.doneButtonTapped.onNext(())
-                                        }
-                         }
-                   
+                
+                
+                it("Adding Contact should be Successfull"){
+                    sut.phoneNumber.accept("01670139638")
+                    sut.firstName.accept("sadman")
+                    sut.lastName.accept("samee")
+                    sut.email.accept("sadman.dd@fm.dd")
+                    sut.favorite.accept(true)
+                    
+                    sut.onEditSuccess.asObservable().debug().subscribe({ result in
+                        expect(result.element?.1).to(beTrue())
+                        }
+                    ).disposed(by: disposeBag)
+                    
+                    sut.onAlertMessage.asObservable().debug().subscribe({  result in
+                        expect(result.element).to(beNil())
+                    }).disposed(by: disposeBag)
+                    
+                    sut.doneButtonTapped.onNext(())
+                }
+            }
+            
         }
     }
 }

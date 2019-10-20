@@ -88,7 +88,7 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
             viewModel.contactAdded(dictionary: dictionary)
         }
     }
-    
+
     @objc func onDeleteContact(_ notification: Notification) {
           if let dictionary = notification.userInfo as? [String: Any] {
               viewModel.contactDeleted(dictionary: dictionary)
@@ -199,7 +199,6 @@ extension ContactsVC {
 //                    cell.viewModel = element
 //                    return cell
 //                }.disposed(by: disposeBag)
-
 
         // setting delegate
         tableView.rx.setDelegate(self)

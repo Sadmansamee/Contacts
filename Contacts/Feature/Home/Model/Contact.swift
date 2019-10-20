@@ -15,7 +15,6 @@ struct Contact {
     var email: String!
     var phoneNumber: String!
 
-    
     /**
      * Instantiate the instance using the passed json values to set the properties values
      */
@@ -28,9 +27,7 @@ struct Contact {
         id = json["id"].intValue
         lastName = json["last_name"].stringValue
         profilePic = json["profile_pic"].stringValue
-        if let url = json["url"].string {
-            self.url = url
-        }
+        url = json["url"].stringValue
         email = json["email"].stringValue
         phoneNumber = json["phone_number"].stringValue
     }

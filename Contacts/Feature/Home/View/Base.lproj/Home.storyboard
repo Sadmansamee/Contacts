@@ -266,9 +266,6 @@
                                                     <rect key="frame" x="20" y="7" width="374" height="30"/>
                                                     <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <state key="normal" title="Delete"/>
-                                                    <connections>
-                                                        <action selector="actionDelete:" destination="PNv-nd-Seu" eventType="touchUpInside" id="C7E-mK-JkW"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -348,9 +345,6 @@
                                                     <state key="normal" title="Done">
                                                         <color key="titleColor" red="0.35380139946937561" green="0.9044615626335144" blue="0.78859633207321167" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
-                                                    <connections>
-                                                        <action selector="actionDone:" destination="CRn-vF-tpY" eventType="touchUpInside" id="oqN-iS-lcJ"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>

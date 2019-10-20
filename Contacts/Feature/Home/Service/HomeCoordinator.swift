@@ -68,7 +68,7 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
         viewController.onBack = { [unowned self] in
             self.navigationController.dismiss(animated: true, completion: nil)
         }
-      
+
         viewController.viewModel = viewModel
         navigationController.present(viewController, animated: true, completion: nil)
     }

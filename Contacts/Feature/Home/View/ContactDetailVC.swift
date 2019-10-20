@@ -66,8 +66,8 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
         imageViewProfile.makeCircular()
     }
 
-    func viewModelCallbacks() {
-        viewModel.onDelete
+    private func viewModelCallbacks() {
+        viewModel.onDeleteSuccess
             .map { [weak self] in
                 if $0.1 {
                     NotificationCenter.default.post(name: .didContactDeleted, object: nil, userInfo: $0.0.contactVM.toDictionary())
@@ -95,9 +95,10 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
     }
 
     private func bindViewModel() {
+
         viewModel.onContactViewModel
-            .map { [weak self] in
-                self?.setContactDetailUI(contactViewModel: $0)
+            .map { [weak self] result in
+                self?.setContactDetailUI(contactViewModel: result)
             }.subscribe()
             .disposed(by: disposeBag)
 
@@ -106,7 +107,7 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
             .disposed(by: disposeBag)
     }
 
-    @objc func onUpdatedContact(_ notification: Notification) {
+    @objc private func onUpdatedContact(_ notification: Notification) {
         if let dictionary = notification.userInfo as? [String: Any] {
             viewModel.contactUpdated(dictionary: dictionary)
         }
@@ -148,8 +149,6 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
         present(alert, animated: true)
     }
-
-    @IBAction func actionDelete(_: Any) {}
 
     @IBAction func actionEdit(_: Any) {
         onEditContact?(contactViewModel)

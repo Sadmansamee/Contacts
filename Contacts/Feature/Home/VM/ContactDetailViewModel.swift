@@ -30,7 +30,7 @@ final class ContactDetailViewModel {
             .distinctUntilChanged()
     }
 
-    var onDelete: Observable<(ContactViewModel, Bool)> {
+    var onDeleteSuccess: Observable<(ContactViewModel, Bool)> {
         isDeleted.asObservable()
     }
 
@@ -47,15 +47,14 @@ final class ContactDetailViewModel {
     init(contactProvider: MoyaProvider<ContactService>, viewModel: ContactViewModel) {
         self.contactProvider = contactProvider
         contactViewModel.onNext(viewModel)
-        
+
         fetchContactDetail(viewModel: viewModel)
-        
+
         deleteButtonTapped.asObserver()
             .subscribe(onNext: { [weak self] in
                 self?.deleteContact(viewModel: viewModel)
             }).disposed(by: disposeBag)
-        
-       
+
     }
 
     func contactUpdated(dictionary: [String: Any]) {
@@ -77,8 +76,8 @@ final class ContactDetailViewModel {
                     let filteredResponse = try response.filterSuccessfulStatusCodes()
 
                     let json = JSON(filteredResponse.data)
-                    var contact = Contact(fromJson: json)
-                    contact.url = viewModel.contactVM.url
+                    let contact = Contact(fromJson: json)
+                    //contact.url = viewModel.contactVM.url
                     self.contactViewModel.onNext(contact)
 
                 } catch {
@@ -93,7 +92,7 @@ final class ContactDetailViewModel {
     func deleteContact(viewModel: ContactViewModel) {
         isLoading.accept(true)
 
-        contactProvider.request(.contactDelete(url: viewModel.contactVM.url), completion: { result in
+        contactProvider.request(.contactDelete(id: viewModel.contactVM.id), completion: { result in
             self.isLoading.accept(false)
 
             if case let .success(response) = result {
@@ -101,7 +100,7 @@ final class ContactDetailViewModel {
                     // ON DELETE if deletion is successful there's no success message or anything so if 200 received taking it as successfull
                     // let filteredResponse = try response.filterSuccessfulStatusCodes()
                     // let json = JSON(filteredResponse.data)
-                    self.isDeleted.onNext((viewModel,true))
+                    self.isDeleted.onNext((viewModel, true))
 
                 } catch {
                     self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
