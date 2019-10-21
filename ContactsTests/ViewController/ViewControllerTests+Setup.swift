@@ -6,10 +6,10 @@
 //  Copyright © 2019 Sadman Samee. All rights reserved.
 //
 
+@testable import Contacts
 import Foundation
 import Moya
 import SwiftyJSON
-@testable import Contacts
 import Swinject
 
 extension ViewControllerTest {
@@ -19,9 +19,8 @@ extension ViewControllerTest {
     func setupDependencies() -> Container {
         let container = Container()
         
-        
         container.register(MoyaProvider<ContactService>.self, factory: { _ in
-            MoyaProvider<ContactService>()
+            MoyaProvider<ContactService>(stubClosure: MoyaProvider.immediatelyStub)
         }).inObjectScope(ObjectScope.container)
         
         // MARK: - View Model
@@ -31,7 +30,13 @@ extension ViewControllerTest {
         }).inObjectScope(ObjectScope.container)
         
         container.register(ContactEditCreateViewModel.self, factory: { container in
-            ContactEditCreateViewModel(contactProvider: container.resolve(MoyaProvider<ContactService>.self)!)
+            
+            let path = Bundle.main.path(forResource: MockJson.contact.rawValue, ofType: "json")!
+            let url = URL(fileURLWithPath: path)
+            let json = try? JSON(data: Data(contentsOf: url))
+            let contact = Contact(fromJson: json)
+            
+            return ContactEditCreateViewModel(contactProvider: container.resolve(MoyaProvider<ContactService>.self)!, viewModel: contact)
         }).inObjectScope(ObjectScope.container)
         
         container.register(ContactDetailViewModel.self, factory: { container in
@@ -41,7 +46,8 @@ extension ViewControllerTest {
             let json = try? JSON(data: Data(contentsOf: url))
             let contact = Contact(fromJson: json)
             
-            return ContactDetailViewModel(contactProvider: container.resolve(MoyaProvider<ContactService>.self)!, viewModel: contact)}).inObjectScope(ObjectScope.container)
+            return ContactDetailViewModel(contactProvider: container.resolve(MoyaProvider<ContactService>.self)!, viewModel: contact)
+        }).inObjectScope(ObjectScope.container)
         
         // MARK: - View Controllers
         
@@ -49,7 +55,7 @@ extension ViewControllerTest {
             controller.viewModel = resolver.resolve(ContactsViewModel.self)
         }
         
-        container.storyboardInitCompleted(ContactDetailVC.self) {resolver, controller in
+        container.storyboardInitCompleted(ContactDetailVC.self) { resolver, controller in
             controller.viewModel = resolver.resolve(ContactDetailViewModel.self)
         }
         

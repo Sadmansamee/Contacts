@@ -37,7 +37,21 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
     @IBOutlet var labelEmail: UILabel!
 
     private var loadingView: UIActivityIndicatorView!
-    private var contactViewModel: ContactViewModel!
+    private var contactViewModel: ContactViewModel!{
+        didSet{
+            imageViewProfile.kf.setImage(with: URL(string: contactViewModel.profilePicUrl), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
+                labelName.text = contactViewModel.name
+
+                labelEmail.text = contactViewModel.emailVM
+                labelMobile.text = contactViewModel.phoneNumberVM
+
+                if contactViewModel.isFavorite {
+                    imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button_selected")
+                } else {
+                    imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button")
+                }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +60,9 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
         bindViewModel()
         viewModelCallbacks()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(onUpdatedContact(_:)), name: .didContactUpdated, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(onUpdatedContact(_:)),
+                                               name: .didContactUpdated, object: nil)
     }
 
     deinit {
@@ -70,7 +86,9 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
         viewModel.onDeleteSuccess
             .map { [weak self] in
                 if $0.1 {
-                    NotificationCenter.default.post(name: .didContactDeleted, object: nil, userInfo: $0.0.contactVM.toDictionary())
+                    NotificationCenter.default.post(name: .didContactDeleted,
+                                                    object: nil,
+                                                    userInfo: $0.0.contactVM.toDictionary())
                     self?.onBack?()
                 }
             }.subscribe()
@@ -95,10 +113,9 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
     }
 
     private func bindViewModel() {
-
         viewModel.onContactViewModel
             .map { [weak self] result in
-                self?.setContactDetailUI(contactViewModel: result)
+                self?.contactViewModel = result
             }.subscribe()
             .disposed(by: disposeBag)
 
@@ -127,21 +144,6 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
         loadingView.center = view.center
         loadingView.hidesWhenStopped = true
         view.addSubview(loadingView)
-    }
-
-    private func setContactDetailUI(contactViewModel: ContactViewModel) {
-        self.contactViewModel = contactViewModel
-        imageViewProfile.kf.setImage(with: URL(string: contactViewModel.profilePicUrl), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
-        labelName.text = contactViewModel.name
-
-        labelEmail.text = contactViewModel.emailVM
-        labelMobile.text = contactViewModel.phoneNumberVM
-
-        if contactViewModel.isFavorite {
-            imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button_selected")
-        } else {
-            imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button")
-        }
     }
 
     private func showAlert(title: String, message: String) {

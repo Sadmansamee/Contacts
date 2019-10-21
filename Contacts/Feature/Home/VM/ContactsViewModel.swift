@@ -39,16 +39,16 @@ final class ContactsViewModel {
     }
 
     func contactDeleted(dictionary: [String: Any]) {
-          let json = JSON(dictionary)
-          let contact = Contact(fromJson: json)
+        let json = JSON(dictionary)
+        let contact = Contact(fromJson: json)
 
-          var oldValue = contactViewModels.value
+        var oldValue = contactViewModels.value
 
-          if let groupIndex = contactViewModels.value.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }), let index = contactViewModels.value[groupIndex].items.firstIndex(where: { $0.id == contact.id }) {
+        if let groupIndex = contactViewModels.value.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }), let index = contactViewModels.value[groupIndex].items.firstIndex(where: { $0.id == contact.id }) {
             oldValue[groupIndex].items.remove(at: index)
-          }
-          contactViewModels.accept(oldValue)
-      }
+        }
+        contactViewModels.accept(oldValue)
+    }
 
     func contactUpdated(dictionary: [String: Any]) {
         let json = JSON(dictionary)
@@ -57,7 +57,7 @@ final class ContactsViewModel {
         var oldValue = contactViewModels.value
 
         if let groupIndex = contactViewModels.value.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }), let index = contactViewModels.value[groupIndex].items.firstIndex(where: { $0.id == contact.id }) {
-             oldValue[groupIndex].items[index] = contact
+            oldValue[groupIndex].items[index] = contact
         }
         contactViewModels.accept(oldValue)
     }

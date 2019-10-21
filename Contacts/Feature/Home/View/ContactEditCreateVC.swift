@@ -51,24 +51,23 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
     // MARK: - Private functions
 
     private func setUI() {
+        btnDone.setTitleColor(.darkGray, for: .disabled)
+        btnDone.setTitleColor(.paste, for: .normal)
 
-         btnDone.setTitleColor(.darkGray, for: .disabled)
-         btnDone.setTitleColor(.paste, for: .normal)
-
-         btnDone.isEnabled = false
-         headerCell.layerGradient(startColor: .white, endColor: .litePaste)
-         setLoadingView()
-         imageViewProfile.makeCircular()
+        btnDone.isEnabled = false
+        headerCell.layerGradient(startColor: .white, endColor: .litePaste)
+        setLoadingView()
+        imageViewProfile.makeCircular()
         tableView.keyboardDismissMode = .interactive
 
-         textFieldFirstName.becomeFirstResponder()
-     }
+        textFieldFirstName.becomeFirstResponder()
+    }
 
     func viewModelCallbacks() {
         viewModel.onAlertMessage
             .map { [weak self] in
                 self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
-        }.subscribe()
+            }.subscribe()
             .disposed(by: disposeBag)
 
         viewModel.onLoading
@@ -78,33 +77,37 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
                 } else {
                     self?.loadingView.stopAnimating()
                 }
-        }
-        .subscribe()
-        .disposed(by: disposeBag)
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
 
         viewModel.onCreateSuccess
             .map { [weak self] in
                 if $0.1 {
-                    NotificationCenter.default.post(name: .didContactAdded, object: nil, userInfo: $0.0.contactVM.toDictionary())
+                    NotificationCenter.default.post(name: .didContactAdded,
+                                                    object: nil,
+                                                    userInfo: $0.0.contactVM.toDictionary())
                     self?.onBack?()
                 }
-        }.subscribe()
+            }.subscribe()
             .disposed(by: disposeBag)
 
         viewModel.onEditSuccess
             .map { [weak self] in
                 if $0.1 {
-                    NotificationCenter.default.post(name: .didContactUpdated, object: nil, userInfo: $0.0.contactVM.toDictionary())
+                    NotificationCenter.default.post(name: .didContactUpdated,
+                                                    object: nil,
+                                                    userInfo: $0.0.contactVM.toDictionary())
                     self?.onBack?()
                 }
-        }.subscribe()
+            }.subscribe()
             .disposed(by: disposeBag)
 
         viewModel.onImageUrl
             .map { [weak self] url in
 
                 self?.imageViewProfile.kf.setImage(with: URL(string: url), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
-        }.subscribe()
+            }.subscribe()
             .disposed(by: disposeBag)
     }
 
@@ -119,12 +122,16 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
             .disposed(by: disposeBag)
 
         viewModel.isValidAll
+            .debounce(DispatchTimeInterval.milliseconds(1400), scheduler: MainScheduler.instance)
             .map { [weak self] in
                 if $0 {
+                    //self?.view.endEditing(true)
                     self?.scrollToTop()
                     self?.btnDone.shake(duration: 1)
+                    //self?.btnDone.pulsate()
                 }
-        }.subscribe()
+            }
+        .subscribe()
             .disposed(by: disposeBag)
 
         btnDone.rx.tap.asObservable()
@@ -143,7 +150,7 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
 
     func scrollToTop() {
         let indexPath = IndexPath(row: 0, section: 0)
-        self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 
     private func setLoadingView() {

@@ -12,5 +12,4 @@ extension Notification.Name {
     static let didContactUpdated = Notification.Name("didContactUpdated")
     static let didContactAdded = Notification.Name("didContactAdded")
     static let didContactDeleted = Notification.Name("didContactDeleted")
-
 }

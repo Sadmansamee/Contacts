@@ -7,13 +7,13 @@
 import Foundation
 
 #if os(iOS) || os(watchOS) || os(tvOS)
-import UIKit
+    import UIKit
 
-public typealias OSViewController = UIViewController
+    public typealias OSViewController = UIViewController
 #elseif os(macOS)
-import Cocoa
+    import Cocoa
 
-public typealias OSViewController = NSViewController
+    public typealias OSViewController = NSViewController
 #endif
 
 import Nimble

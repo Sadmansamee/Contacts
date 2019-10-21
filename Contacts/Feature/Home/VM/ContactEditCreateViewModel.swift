@@ -18,6 +18,7 @@ final class ContactEditCreateViewModel {
     }
 
     // MARK: - Properties
+
     var contactProvider: MoyaProvider<ContactService>
     let disposeBag = DisposeBag()
     private var taskMode: TaskMode!
@@ -83,7 +84,7 @@ final class ContactEditCreateViewModel {
         return Observable.combineLatest(isFirstnameValid,
                                         isLastnameValid,
                                         isPhoneNumberValid,
-                                        isEmailValid) { $0 && $1 && $2 && $3 }
+            isEmailValid) { $0 && $1 && $2 && $3 }.distinctUntilChanged()
     }
 
     // MARK: - INIT
@@ -140,10 +141,12 @@ final class ContactEditCreateViewModel {
                                             let contact = Contact(fromJson: json)
                                             self.isCreateSuccess.onNext((contact, true))
                                         } catch {
-                                            self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
+                                            self.alertMessage.onNext(
+                                                AlertMessage(title: error.localizedDescription, message: ""))
                                         }
                                     } else {
-                                        self.alertMessage.onNext(AlertMessage(title: result.error?.errorDescription, message: ""))
+                                        self.alertMessage.onNext(
+                                            AlertMessage(title: result.error?.errorDescription, message: ""))
                                     }
         })
     }
@@ -166,14 +169,16 @@ final class ContactEditCreateViewModel {
 
                                             let json = JSON(filteredResponse.data)
                                             let contact = Contact(fromJson: json)
-                                            //contact.url = self.url
+                                            // contact.url = self.url
                                             self.isEditSuccess.onNext((contact, true))
 
                                         } catch {
-                                            self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
+                                            self.alertMessage.onNext(
+                                                AlertMessage(title: error.localizedDescription, message: ""))
                                         }
                                     } else {
-                                        self.alertMessage.onNext(AlertMessage(title: result.error?.errorDescription, message: ""))
+                                        self.alertMessage.onNext(
+                                            AlertMessage(title: result.error?.errorDescription, message: ""))
                                     }
         })
     }

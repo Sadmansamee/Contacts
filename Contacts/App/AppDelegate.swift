@@ -6,10 +6,10 @@
 //  Copyright © 2019 Sadman Samee. All rights reserved.
 //
 
+import IQKeyboardManager
 import RxSwift
 import Swinject
 import UIKit
-import IQKeyboardManager
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appCoordinator.start()
 
         window?.makeKeyAndVisible()
-        //IQKeyboardManager.shared().isEnabled = true
+        // IQKeyboardManager.shared().isEnabled = true
 
         return true
     }

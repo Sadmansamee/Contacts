@@ -10,10 +10,6 @@ import Foundation
 
 import UIKit
 
-enum KStoryboard: String {
-    case home = "Home"
-}
-
 protocol StoryboardLoadable: AnyObject {
     static var storyboardName: String { get }
 }

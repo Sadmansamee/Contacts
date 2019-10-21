@@ -21,12 +21,6 @@ public enum ContactService {
 extension ContactService: TargetType {
     public var baseURL: URL {
         return URL(string: Constant.Url.base)!
-//        switch self {
-//        case  let .contactDelete(url):
-//            return URL(string: url)!
-//        default:
-//            return URL(string: Constant.Url.base)!
-//        }
     }
 
     public var path: String {
@@ -35,8 +29,6 @@ extension ContactService: TargetType {
             return "contacts.json"
         case let .contactDetail(id), let .contactUpdate(id, _, _, _, _, _), let .contactDelete(id):
             return "contacts/\(id).json"
-//        case .contactDelete:
-//            return ""
         }
     }
 
@@ -58,9 +50,13 @@ extension ContactService: TargetType {
         case .contacts, .contactDetail, .contactDelete:
             return .requestPlain
         case let .contactCreate(firstName, lastName, email, phoneNumber, favorite):
-            return .requestParameters(parameters: ["first_name": firstName, "last_name": lastName, "email": email, "phoneNumber": phoneNumber, "favorite": favorite], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: ["first_name": firstName, "last_name":
+                    lastName, "email": email, "phoneNumber":
+                    phoneNumber, "favorite": favorite], encoding: JSONEncoding.default)
         case let .contactUpdate(_, firstName, lastName, email, phoneNumber, favorite):
-            return .requestParameters(parameters: ["first_name": firstName, "last_name": lastName, "email": email, "phoneNumber": phoneNumber, "favorite": favorite], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: ["first_name": firstName, "last_name": lastName,
+                                                   "email": email, "phoneNumber": phoneNumber,
+                                                   "favorite": favorite], encoding: JSONEncoding.default)
         }
     }
 

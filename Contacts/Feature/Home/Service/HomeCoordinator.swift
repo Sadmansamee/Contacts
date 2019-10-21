@@ -40,7 +40,7 @@ final class HomeCoordinator: BaseCoordinator, CoordinatorFinishOutput {
         viewController.onContactSelected = { viewModel in
             self.showContactsDetailVC(viewModel:
                 ContactDetailViewModel(contactProvider: self.container.resolve(MoyaProvider<ContactService>.self)!,
-                                 viewModel: viewModel))
+                                       viewModel: viewModel))
         }
         viewController.onAddContact = { [unowned self] in
             self.showToAddContactEditCreateVC()

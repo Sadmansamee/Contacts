@@ -46,7 +46,10 @@ final class ContactDetailViewModel {
 
     init(contactProvider: MoyaProvider<ContactService>, viewModel: ContactViewModel) {
         self.contactProvider = contactProvider
+        
         contactViewModel.onNext(viewModel)
+        
+        dump(viewModel)
 
         fetchContactDetail(viewModel: viewModel)
 
@@ -54,7 +57,6 @@ final class ContactDetailViewModel {
             .subscribe(onNext: { [weak self] in
                 self?.deleteContact(viewModel: viewModel)
             }).disposed(by: disposeBag)
-
     }
 
     func contactUpdated(dictionary: [String: Any]) {
@@ -77,7 +79,7 @@ final class ContactDetailViewModel {
 
                     let json = JSON(filteredResponse.data)
                     let contact = Contact(fromJson: json)
-                    //contact.url = viewModel.contactVM.url
+                    // contact.url = viewModel.contactVM.url
                     self.contactViewModel.onNext(contact)
 
                 } catch {
@@ -95,12 +97,15 @@ final class ContactDetailViewModel {
         contactProvider.request(.contactDelete(id: viewModel.contactVM.id), completion: { result in
             self.isLoading.accept(false)
 
-            if case  .success(_) = result {
-               // do {
-                    // ON DELETE if deletion is successful there's no success message or anything so if 200 received taking it as successfull
-                    // let filteredResponse = try response.filterSuccessfulStatusCodes()
-                    // let json = JSON(filteredResponse.data)
-                    self.isDeleted.onNext((viewModel, true))
+            if case .success = result {
+                // do {
+                
+                //TODO:- ON DELETE if deletion is successful there's no success message
+                // or anything so if 200 received taking it as successfull
+                
+                // let filteredResponse = try response.filterSuccessfulStatusCodes()
+                // let json = JSON(filteredResponse.data)
+                self.isDeleted.onNext((viewModel, true))
 
 //                } catch {
 //                    self.alertMessage.onNext(AlertMessage(title: error.localizedDescription, message: ""))
