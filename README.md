@@ -1,7 +1,7 @@
 # Contacts
  
 * This project was written and compiled using Xcode 11, so if it doesn’t compile in the previous version of Xcode you need Xcode 11.
-* This project used [Cocoapod](https://cocoapods.org/) as a dependency manager, you have to install it on your device before compiling this project.
+* This project used [Cocoapod](https://cocoapods.org/) 1.8.4  as a dependency manager, you have to install it on your device before compiling this project.
 
 
 ## This project has the following:
