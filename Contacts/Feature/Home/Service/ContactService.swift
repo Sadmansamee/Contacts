@@ -51,11 +51,12 @@ extension ContactService: TargetType {
             return .requestPlain
         case let .contactCreate(firstName, lastName, email, phoneNumber, favorite):
             return .requestParameters(parameters: ["first_name": firstName, "last_name":
-                    lastName, "email": email, "phoneNumber":
+                    lastName, "email": email, "phone_number":
                     phoneNumber, "favorite": favorite], encoding: JSONEncoding.default)
+       
         case let .contactUpdate(_, firstName, lastName, email, phoneNumber, favorite):
             return .requestParameters(parameters: ["first_name": firstName, "last_name": lastName,
-                                                   "email": email, "phoneNumber": phoneNumber,
+                                                   "email": email, "phone_number": phoneNumber,
                                                    "favorite": favorite], encoding: JSONEncoding.default)
         }
     }
