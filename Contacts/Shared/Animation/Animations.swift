@@ -13,7 +13,6 @@ import UIKit
 typealias Animation = (UITableViewCell, IndexPath, UITableView) -> Void
 
 enum AnimationFactory {
-
     static func makeFade(duration: TimeInterval, delayFactor: Double) -> Animation {
         return { cell, indexPath, _ in
             cell.alpha = 0
@@ -23,12 +22,13 @@ enum AnimationFactory {
                 delay: delayFactor * Double(indexPath.row),
                 animations: {
                     cell.alpha = 1
-            })
+                }
+            )
         }
     }
 
     static func makeMoveUpWithBounce(rowHeight: CGFloat, duration: TimeInterval, delayFactor: Double) -> Animation {
-        return { cell, indexPath, tableView in
+        return { cell, indexPath, _ in
             cell.transform = CGAffineTransform(translationX: 0, y: rowHeight)
 
             UIView.animate(
@@ -39,7 +39,8 @@ enum AnimationFactory {
                 options: [.curveEaseInOut],
                 animations: {
                     cell.transform = CGAffineTransform(translationX: 0, y: 0)
-            })
+                }
+            )
         }
     }
 
@@ -53,12 +54,13 @@ enum AnimationFactory {
                 options: [.curveEaseInOut],
                 animations: {
                     cell.transform = CGAffineTransform(translationX: 0, y: 0)
-            })
+                }
+            )
         }
     }
 
     static func makeMoveUpWithFade(rowHeight: CGFloat, duration: TimeInterval, delayFactor: Double) -> Animation {
-        return { cell, indexPath, tableView in
+        return { cell, indexPath, _ in
             cell.transform = CGAffineTransform(translationX: 0, y: rowHeight / 2)
             cell.alpha = 0
 
@@ -69,7 +71,8 @@ enum AnimationFactory {
                 animations: {
                     cell.transform = CGAffineTransform(translationX: 0, y: 0)
                     cell.alpha = 1
-            })
+                }
+            )
         }
     }
 }

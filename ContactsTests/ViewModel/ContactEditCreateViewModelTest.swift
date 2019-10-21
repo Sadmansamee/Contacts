@@ -33,6 +33,15 @@ class ContactEditCreateViewModelTest: QuickSpec {
                 sut = ContactEditCreateViewModel(contactProvider: stubbingProvider, viewModel: Contact(fromJson: json))
             }
 
+            context("Field Validation Should Pass") {
+                it("with data from ContactVM") {
+                    sut.isValidAll.asObservable().debug().subscribe({ result in
+                        expect(result.element).to(beTrue())
+                    }
+                    ).disposed(by: disposeBag)
+                }
+            }
+
             context("when initialized and data is okhay") {
                 it("Editing Contact is Successfull") {
                     sut.onEditSuccess.asObservable().debug().subscribe({ result in
@@ -62,17 +71,6 @@ class ContactEditCreateViewModelTest: QuickSpec {
                     sut.doneButtonTapped.onNext(())
                 }
             }
-
-            context("Field Validation Should Pass") {
-                it("with data from ContactVM") {
-                    sut.isValidAll.asObservable().debug().subscribe({ result in
-                        expect(result.element).to(beTrue())
-                    }
-                    ).disposed(by: disposeBag)
-
-                    sut.doneButtonTapped.onNext(())
-                }
-            }
         }
 
         describe("ContactEditCreateViewModelTest Create") {
@@ -86,6 +84,30 @@ class ContactEditCreateViewModelTest: QuickSpec {
                 sut = ContactEditCreateViewModel(contactProvider: stubbingProvider)
             }
 
+            context("Field Validation Should Fail") {
+                it("Validation should fail with empty") {
+                    sut.isValidAll.asObservable().debug().subscribe({ result in
+                        expect(result.element).toNot(beTrue())
+                    }
+                    ).disposed(by: disposeBag)
+                }
+            }
+
+            context("Field Validation Should Pass") {
+                it("Validation should pass with data from Field") {
+                    sut.phoneNumber.accept("1234567890")
+                    sut.firstName.accept("sadman")
+                    sut.lastName.accept("samee")
+                    sut.email.accept("sadman.dd@fm.dd")
+                    sut.favorite.accept(true)
+
+                    sut.isValidAll.asObservable().debug().subscribe({ result in
+                        expect(result.element).to(beTrue())
+                    }
+                    ).disposed(by: disposeBag)
+                }
+            }
+
             context("when Editing contact should fail") {
                 it("with empty data in create Mode") {
                     sut.onEditSuccess.asObservable().debug().subscribe({ result in
@@ -96,16 +118,6 @@ class ContactEditCreateViewModelTest: QuickSpec {
                     sut.onAlertMessage.asObservable().debug().subscribe { result in
                         expect(result.element).toNot(beNil())
                     }.disposed(by: disposeBag)
-
-                    sut.doneButtonTapped.onNext(())
-                }
-            }
-            context("Field Validation Should Fail") {
-                it("Validation should fail with empty") {
-                    sut.isValidAll.asObservable().debug().subscribe({ result in
-                        expect(result.element).toNot(beTrue())
-                    }
-                    ).disposed(by: disposeBag)
 
                     sut.doneButtonTapped.onNext(())
                 }
@@ -127,22 +139,6 @@ class ContactEditCreateViewModelTest: QuickSpec {
                     sut.onAlertMessage.asObservable().debug().subscribe { result in
                         expect(result.element).to(beNil())
                     }.disposed(by: disposeBag)
-
-                    sut.doneButtonTapped.onNext(())
-                }
-            }
-            context("Field Validation Should Pass") {
-                it("Validation should pass with data from Field") {
-                    sut.phoneNumber.accept("01670139638")
-                    sut.firstName.accept("sadman")
-                    sut.lastName.accept("samee")
-                    sut.email.accept("sadman.dd@fm.dd")
-                    sut.favorite.accept(true)
-
-                    sut.isValidAll.asObservable().debug().subscribe({ result in
-                        expect(result.element).to(beTrue())
-                    }
-                    ).disposed(by: disposeBag)
 
                     sut.doneButtonTapped.onNext(())
                 }

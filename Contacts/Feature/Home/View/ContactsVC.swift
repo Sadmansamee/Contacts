@@ -166,36 +166,30 @@ extension ContactsVC {
             }
             .subscribe()
             .disposed(by: disposeBag)
-        
-        
+
         viewModel.onOperatedCell
             .map { [weak self] operatedCell in
-                
+
                 guard let self = self else {
                     return
                 }
-                var animation : Animation!
+                var animation: Animation!
                 switch operatedCell.1 {
-                    case .added:
-                        animation = AnimationFactory.makeMoveUpWithBounce(rowHeight: 65, duration: 0.8, delayFactor: 1)
-                        break
-                    case .updated:
-                        animation = AnimationFactory.makeMoveUpWithBounce(rowHeight: 65, duration: 0.8, delayFactor: 0.50)
-                        break
-                    case .deleted:
-                        animation = AnimationFactory.makeFade(duration: 0.8, delayFactor: 0.50)
-                        break
+                case .added:
+                    animation = AnimationFactory.makeMoveUpWithBounce(rowHeight: 65, duration: 0.8, delayFactor: 1)
+                case .updated:
+                    animation = AnimationFactory.makeMoveUpWithBounce(rowHeight: 65, duration: 0.8, delayFactor: 0.50)
+                case .deleted:
+                    animation = AnimationFactory.makeFade(duration: 0.8, delayFactor: 0.50)
                 }
-                
-                
+
                 let animator = Animator(animation: animation)
-                if let cell = self.tableView.cellForRow(at: operatedCell.0){
+                if let cell = self.tableView.cellForRow(at: operatedCell.0) {
                     animator.animate(cell: cell, at: operatedCell.0, in: self.tableView)
                 }
-        }
-        .subscribe()
-        .disposed(by: disposeBag)
-        
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
     }
 }
 

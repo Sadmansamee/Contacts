@@ -49,8 +49,6 @@ final class ContactDetailViewModel {
 
         contactViewModel.onNext(viewModel)
 
-        dump(viewModel)
-
         fetchContactDetail(viewModel: viewModel)
 
         deleteButtonTapped.asObserver()

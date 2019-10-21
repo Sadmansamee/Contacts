@@ -13,6 +13,7 @@ import Nimble
 import Quick
 import Swinject
 import XCTest
+import RxSwift
 
 class ViewControllerTest: QuickSpec {
     override func spec() {
@@ -68,6 +69,27 @@ class ViewControllerTest: QuickSpec {
                 }
             }
         }
+        
+        describe("ContactDetailVC") {
+               var subject: ContactDetailVC!
+                let disposeBag = DisposeBag()
+
+               beforeEach {
+                   subject = container.resolveViewController(ContactDetailVC.self)
+                   _ = subject.view
+               }
+
+               context("when view is loaded") {
+                   it("detail loaded") {
+
+                    subject.viewModel.onContactViewModel.asObservable().debug().subscribe(onNext: { result in
+                        expect(subject.labelName.text).to(equal("Alexaaaaaa Amaz"))
+                        expect(subject.labelName.text).notTo(beEmpty())
+                        expect(subject.imageViewFavourite.isHidden).to(beFalse())
+                        }).disposed(by: disposeBag)
+                   }
+               }
+           }
 
         describe("ContactEditCreateVC") {
             var subject: ContactEditCreateVC!
@@ -81,6 +103,9 @@ class ViewControllerTest: QuickSpec {
                 it("should have Contact data loaded in Edit Mode") {
                     expect(subject.textFieldFirstName.text).to(equal("Alexaaaaaa"))
                     expect(subject.textFieldLastName.text).to(equal("Amaz"))
+                    expect(subject.textFieldEmail.text).to(equal("ghhh@hhh.com"))
+                    expect(subject.textFieldMobile.text).to(equal("0174481360000"))
+                    expect(subject.btnDone.isEnabled).to(beTrue())
                 }
             }
         }

@@ -73,7 +73,7 @@ final class ContactEditCreateViewModel {
     }
 
     private var isPhoneNumberValid: Observable<Bool> {
-        return phoneNumber.asObservable().map { $0.count >= 10  && $0.isPhoneNumber}
+        return phoneNumber.asObservable().map { $0.count >= 10 && $0.isPhoneNumber }
     }
 
     private var isEmailValid: Observable<Bool> {
@@ -117,16 +117,15 @@ final class ContactEditCreateViewModel {
 
     // MARK: - Private functions
 
-    private func makeDefault(){
+    private func makeDefault() {
         email.accept("")
         phoneNumber.accept("")
         firstName.accept("")
         lastName.accept("")
         favorite.accept(false)
         imageUrl.accept("")
-        
     }
-    
+
     private func updateCreateContact() {
         switch taskMode {
         case .create:
@@ -153,12 +152,16 @@ final class ContactEditCreateViewModel {
                                             let filteredResponse = try response.filterSuccessfulStatusCodes()
 
                                             let json = JSON(filteredResponse.data)
-                                            if(json["errors"].arrayValue.isEmpty){
+                                            if json["errors"].arrayValue.isEmpty {
                                                 let contact = Contact(fromJson: json)
                                                 self.makeDefault()
                                                 self.isCreateSuccess.onNext((contact, true))
                                             }
-                                            
+
+                                            if let errors = json["errors"].array, let firstError = errors.first, let message = firstError.string {
+                                                self.alertMessage.onNext(AlertMessage(title: message, message: ""))
+                                            }
+
                                         } catch {
                                             self.alertMessage.onNext(
                                                 AlertMessage(title: error.localizedDescription, message: ""))
@@ -187,12 +190,16 @@ final class ContactEditCreateViewModel {
                                             let filteredResponse = try response.filterSuccessfulStatusCodes()
 
                                             let json = JSON(filteredResponse.data)
-                                            if(json["errors"].arrayValue.isEmpty){
+                                            if json["errors"].arrayValue.isEmpty {
                                                 let contact = Contact(fromJson: json)
                                                 self.makeDefault()
                                                 self.isEditSuccess.onNext((contact, true))
                                             }
-                                            
+
+                                            if let errors = json["errors"].array, let firstError = errors.first, let message = firstError.string {
+                                                self.alertMessage.onNext(AlertMessage(title: message, message: ""))
+                                            }
+
                                         } catch {
                                             self.alertMessage.onNext(
                                                 AlertMessage(title: error.localizedDescription, message: ""))

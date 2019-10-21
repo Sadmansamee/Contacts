@@ -53,7 +53,7 @@ extension ContactService: TargetType {
             return .requestParameters(parameters: ["first_name": firstName, "last_name":
                     lastName, "email": email, "phone_number":
                     phoneNumber, "favorite": favorite], encoding: JSONEncoding.default)
-       
+
         case let .contactUpdate(_, firstName, lastName, email, phoneNumber, favorite):
             return .requestParameters(parameters: ["first_name": firstName, "last_name": lastName,
                                                    "email": email, "phone_number": phoneNumber,

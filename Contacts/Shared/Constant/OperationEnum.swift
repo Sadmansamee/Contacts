@@ -12,5 +12,4 @@ enum OperationType {
     case deleted
     case added
     case updated
-
 }
