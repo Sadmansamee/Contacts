@@ -12,7 +12,6 @@ import Nimble
 import Quick
 import RxBlocking
 import RxSwift
-import RxTest
 
 @testable import Contacts
 
@@ -29,7 +28,7 @@ class ContactsViewModelTest: QuickSpec {
             beforeEach {
                 stubbingProvider = MoyaProvider<ContactService>(stubClosure: MoyaProvider.immediatelyStub)
                 sut = ContactsViewModel(contactProvider: stubbingProvider)
-                sut.fetchContacts()
+                // sut.fetchContacts()
             }
             context("when initialized and data count okhay") {
                 it("should load all the Contactss") {

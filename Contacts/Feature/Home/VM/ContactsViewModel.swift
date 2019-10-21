@@ -36,6 +36,7 @@ final class ContactsViewModel {
 
     init(contactProvider: MoyaProvider<ContactService>) {
         self.contactProvider = contactProvider
+        fetchContacts()
     }
 
     func contactDeleted(dictionary: [String: Any]) {

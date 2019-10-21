@@ -8,9 +8,7 @@
 
 import Foundation
 
-import UIKit
-
-struct Constant {
+enum Constant {
     struct Url {
         static let base = "http://gojek-contacts-app.herokuapp.com/"
     }

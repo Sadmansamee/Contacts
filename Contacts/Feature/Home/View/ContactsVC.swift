@@ -34,7 +34,7 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
-            #selector(ContactsVC.handleRefresh(_:)),
+            #selector(handleRefresh(_:)),
                                  for: UIControl.Event.valueChanged)
         refreshControl.tintColor = .paste
 
@@ -103,29 +103,6 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
         }
     }
 
-    private func viewModelCallbacks() {
-        viewModel.onAlertMessage
-            .map { [weak self] in
-                self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
-            }.subscribe()
-            .disposed(by: disposeBag)
-
-        viewModel.onLoading
-            .map { [weak self] isLoading in
-                if isLoading {
-                    self?.loadingView.startAnimating()
-                } else {
-                    self?.loadingView.stopAnimating()
-                }
-            }
-            .subscribe()
-            .disposed(by: disposeBag)
-    }
-
-    private func bindViewModel() {
-        viewModel.fetchContacts()
-    }
-
     private func setLoadingView() {
 //                if #available(iOS 13.0, *) {
 //                    loadingView = UIActivityIndicatorView(style: .large)
@@ -155,11 +132,46 @@ class ContactsVC: UIViewController, HomeStoryboardLoadable, ContactsVCProtocol {
     }
 }
 
+// MARK: - View Model
+
+extension ContactsVC {
+    private func bindViewModel() {
+        // viewModel.fetchContacts()
+    }
+
+    private func viewModelCallbacks() {
+        viewModel.onAlertMessage
+            .map { [weak self] in
+
+                guard let self = self else {
+                    return
+                }
+
+                self.showAlert(title: $0.title ?? "", message: $0.message ?? "")
+            }.subscribe()
+            .disposed(by: disposeBag)
+
+        viewModel.onLoading
+            .map { [weak self] isLoading in
+
+                guard let self = self else {
+                    return
+                }
+
+                if isLoading {
+                    self.loadingView.startAnimating()
+                } else {
+                    self.loadingView.stopAnimating()
+                }
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+    }
+}
+
 // MARK: - TableView
 
 extension ContactsVC {
-    // MARK: - TableView
-
     private func setUpTableView() {
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(ContactTableViewCell.nib, forCellReuseIdentifier: ContactTableViewCell.id)
@@ -188,9 +200,14 @@ extension ContactsVC {
             .modelSelected(Contact.self)
             .subscribe(
                 onNext: { [weak self] item in
-                    if let selectedRowIndexPath = self?.tableView.indexPathForSelectedRow {
-                        self?.tableView?.deselectRow(at: selectedRowIndexPath, animated: true)
-                        self?.onContactSelected?(item)
+
+                    guard let self = self else {
+                        return
+                    }
+
+                    if let selectedRowIndexPath = self.tableView.indexPathForSelectedRow {
+                        self.tableView?.deselectRow(at: selectedRowIndexPath, animated: true)
+                        self.onContactSelected?(item)
                     }
                 }
             )

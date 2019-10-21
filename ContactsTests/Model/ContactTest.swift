@@ -9,9 +9,7 @@
 import Foundation
 import Nimble
 import Quick
-import RxBlocking
 import RxSwift
-import RxTest
 import SwiftyJSON
 
 @testable import Contacts

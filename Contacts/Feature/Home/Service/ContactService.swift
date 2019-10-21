@@ -76,26 +76,19 @@ extension ContactService: TargetType {
         switch self {
         case .contacts:
 
-            guard let path = Bundle.main.path(forResource: MockJson.contacts.rawValue, ofType: "json") else {
+            guard let path = Bundle.main.path(forResource: MockJson.contacts.rawValue, ofType: "json"),
+                let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) else {
                 return "".data(using: String.Encoding.utf8)!
             }
-            let url = URL(fileURLWithPath: path)
-            do {
-                return try Data(contentsOf: url, options: .mappedIfSafe)
-            } catch {
-                return "".data(using: String.Encoding.utf8)!
-            }
+            return data
 
         case .contactDetail, .contactDelete, .contactUpdate, .contactCreate:
-            guard let path = Bundle.main.path(forResource: MockJson.contact.rawValue, ofType: "json") else {
+
+            guard let path = Bundle.main.path(forResource: MockJson.contact.rawValue, ofType: "json"),
+                let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) else {
                 return "".data(using: String.Encoding.utf8)!
             }
-            let url = URL(fileURLWithPath: path)
-            do {
-                return try Data(contentsOf: url, options: .mappedIfSafe)
-            } catch {
-                return "".data(using: String.Encoding.utf8)!
-            }
+            return data
         }
     }
 }

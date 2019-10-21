@@ -37,19 +37,19 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
     @IBOutlet var labelEmail: UILabel!
 
     private var loadingView: UIActivityIndicatorView!
-    private var contactViewModel: ContactViewModel!{
-        didSet{
+    private var contactViewModel: ContactViewModel! {
+        didSet {
             imageViewProfile.kf.setImage(with: URL(string: contactViewModel.profilePicUrl), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
-                labelName.text = contactViewModel.name
+            labelName.text = contactViewModel.name
 
-                labelEmail.text = contactViewModel.emailVM
-                labelMobile.text = contactViewModel.phoneNumberVM
+            labelEmail.text = contactViewModel.emailVM
+            labelMobile.text = contactViewModel.phoneNumberVM
 
-                if contactViewModel.isFavorite {
-                    imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button_selected")
-                } else {
-                    imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button")
-                }
+            if contactViewModel.isFavorite {
+                imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button_selected")
+            } else {
+                imageViewFavourite.image = #imageLiteral(resourceName: "favourite_button")
+            }
         }
     }
 
@@ -85,27 +85,42 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
     private func viewModelCallbacks() {
         viewModel.onDeleteSuccess
             .map { [weak self] in
+
+                guard let self = self else {
+                    return
+                }
+
                 if $0.1 {
                     NotificationCenter.default.post(name: .didContactDeleted,
                                                     object: nil,
                                                     userInfo: $0.0.contactVM.toDictionary())
-                    self?.onBack?()
+                    self.onBack?()
                 }
             }.subscribe()
             .disposed(by: disposeBag)
 
         viewModel.onAlertMessage
             .map { [weak self] in
-                self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
+
+                guard let self = self else {
+                    return
+                }
+
+                self.showAlert(title: $0.title ?? "", message: $0.message ?? "")
             }.subscribe()
             .disposed(by: disposeBag)
 
         viewModel.onLoading
             .map { [weak self] isLoading in
+
+                guard let self = self else {
+                    return
+                }
+
                 if isLoading {
-                    self?.loadingView.startAnimating()
+                    self.loadingView.startAnimating()
                 } else {
-                    self?.loadingView.stopAnimating()
+                    self.loadingView.stopAnimating()
                 }
             }
             .subscribe()
@@ -115,7 +130,12 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
     private func bindViewModel() {
         viewModel.onContactViewModel
             .map { [weak self] result in
-                self?.contactViewModel = result
+
+                guard let self = self else {
+                    return
+                }
+
+                self.contactViewModel = result
             }.subscribe()
             .disposed(by: disposeBag)
 

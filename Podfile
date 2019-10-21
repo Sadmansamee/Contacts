@@ -22,7 +22,6 @@ target 'Contacts' do
     # Pods for testing
     
     pod 'RxBlocking', '~> 5'
-    pod 'RxTest', '~> 5'
     pod 'Quick'
     pod 'Nimble'
     pod 'Swinject' , '~> 2.7.1'

@@ -46,16 +46,21 @@ final class ContactDetailViewModel {
 
     init(contactProvider: MoyaProvider<ContactService>, viewModel: ContactViewModel) {
         self.contactProvider = contactProvider
-        
+
         contactViewModel.onNext(viewModel)
-        
+
         dump(viewModel)
 
         fetchContactDetail(viewModel: viewModel)
 
         deleteButtonTapped.asObserver()
             .subscribe(onNext: { [weak self] in
-                self?.deleteContact(viewModel: viewModel)
+
+                guard let self = self else {
+                    return
+                }
+
+                self.deleteContact(viewModel: viewModel)
             }).disposed(by: disposeBag)
     }
 
@@ -99,10 +104,10 @@ final class ContactDetailViewModel {
 
             if case .success = result {
                 // do {
-                
-                //TODO:- ON DELETE if deletion is successful there's no success message
+
+                // TODO: - ON DELETE if deletion is successful there's no success message
                 // or anything so if 200 received taking it as successfull
-                
+
                 // let filteredResponse = try response.filterSuccessfulStatusCodes()
                 // let json = JSON(filteredResponse.data)
                 self.isDeleted.onNext((viewModel, true))

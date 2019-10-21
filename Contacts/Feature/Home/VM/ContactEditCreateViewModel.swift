@@ -84,7 +84,7 @@ final class ContactEditCreateViewModel {
         return Observable.combineLatest(isFirstnameValid,
                                         isLastnameValid,
                                         isPhoneNumberValid,
-            isEmailValid) { $0 && $1 && $2 && $3 }.distinctUntilChanged()
+                                        isEmailValid) { $0 && $1 && $2 && $3 }.distinctUntilChanged()
     }
 
     // MARK: - INIT
@@ -106,7 +106,12 @@ final class ContactEditCreateViewModel {
 
         doneButtonTapped.asObserver()
             .subscribe(onNext: { [weak self] in
-                self?.updateCreateContact()
+
+                guard let self = self else {
+                    return
+                }
+
+                self.updateCreateContact()
             }).disposed(by: disposeBag)
     }
 

@@ -66,16 +66,26 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
     func viewModelCallbacks() {
         viewModel.onAlertMessage
             .map { [weak self] in
-                self?.showAlert(title: $0.title ?? "", message: $0.message ?? "")
+
+                guard let self = self else {
+                    return
+                }
+
+                self.showAlert(title: $0.title ?? "", message: $0.message ?? "")
             }.subscribe()
             .disposed(by: disposeBag)
 
         viewModel.onLoading
             .map { [weak self] isLoading in
+
+                guard let self = self else {
+                    return
+                }
+
                 if isLoading {
-                    self?.loadingView.startAnimating()
+                    self.loadingView.startAnimating()
                 } else {
-                    self?.loadingView.stopAnimating()
+                    self.loadingView.stopAnimating()
                 }
             }
             .subscribe()
@@ -83,30 +93,42 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
 
         viewModel.onCreateSuccess
             .map { [weak self] in
+
+                guard let self = self else {
+                    return
+                }
+
                 if $0.1 {
                     NotificationCenter.default.post(name: .didContactAdded,
                                                     object: nil,
                                                     userInfo: $0.0.contactVM.toDictionary())
-                    self?.onBack?()
+                    self.onBack?()
                 }
             }.subscribe()
             .disposed(by: disposeBag)
 
         viewModel.onEditSuccess
             .map { [weak self] in
+
+                guard let self = self else {
+                    return
+                }
+
                 if $0.1 {
                     NotificationCenter.default.post(name: .didContactUpdated,
                                                     object: nil,
                                                     userInfo: $0.0.contactVM.toDictionary())
-                    self?.onBack?()
+                    self.onBack?()
                 }
             }.subscribe()
             .disposed(by: disposeBag)
 
         viewModel.onImageUrl
             .map { [weak self] url in
-
-                self?.imageViewProfile.kf.setImage(with: URL(string: url), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
+                guard let self = self else {
+                    return
+                }
+                self.imageViewProfile.kf.setImage(with: URL(string: url), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
             }.subscribe()
             .disposed(by: disposeBag)
     }
@@ -124,14 +146,16 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
         viewModel.isValidAll
             .debounce(DispatchTimeInterval.milliseconds(1400), scheduler: MainScheduler.instance)
             .map { [weak self] in
+                guard let self = self else {
+                    return
+                }
                 if $0 {
-                    //self?.view.endEditing(true)
-                    self?.scrollToTop()
-                    self?.btnDone.shake(duration: 1)
-                    //self?.btnDone.pulsate()
+                    // self?.view.endEditing(true)
+                    self.scrollToTop()
+                    self.btnDone.shake(duration: 1)
                 }
             }
-        .subscribe()
+            .subscribe()
             .disposed(by: disposeBag)
 
         btnDone.rx.tap.asObservable()
