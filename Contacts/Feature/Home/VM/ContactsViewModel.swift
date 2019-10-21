@@ -46,7 +46,14 @@ final class ContactsViewModel {
         var oldValue = contactViewModels.value
 
         if let groupIndex = contactViewModels.value.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }), let index = contactViewModels.value[groupIndex].items.firstIndex(where: { $0.id == contact.id }) {
+            //simply remove the item from list
             oldValue[groupIndex].items.remove(at: index)
+            
+            //remove the group if there are no contact left
+            if(oldValue[groupIndex].items.isEmpty){
+                oldValue.remove(at: groupIndex)
+            }
+            
         }
         contactViewModels.accept(oldValue)
     }
@@ -71,6 +78,13 @@ final class ContactsViewModel {
 
         if let groupIndex = oldValue.firstIndex(where: { $0.header.elementsEqual(String(contact.firstName.first!)) }) {
             oldValue[groupIndex].items.append(contact)
+        }else{
+            //Previously this group wasnot there so creating new group and sorting alphabetically
+            let contactGroup = ContactGroup(header: String(contact.firstName.first!), items: [contact])
+            oldValue.append(contactGroup)
+            
+            oldValue = oldValue.map { ContactGroup(header: $0.header, items: $0.items) }
+            .sorted { $0.header < $1.header }
         }
         contactViewModels.accept(oldValue)
     }
