@@ -22,6 +22,10 @@
 		1A89B3D92355BA290001C7E5 /* AnalyzeLeakAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3CF2355BA290001C7E5 /* AnalyzeLeakAction.swift */; };
 		1A89B3DA2355BA290001C7E5 /* Expectation+Leaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3D02355BA290001C7E5 /* Expectation+Leaks.swift */; };
 		1A89B3DC2355CC1F0001C7E5 /* Extension+RX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A89B3DB2355CC1F0001C7E5 /* Extension+RX.swift */; };
+		1A90C251235D7F500037654B /* OperationEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A90C250235D7F500037654B /* OperationEnum.swift */; };
+		1A90C254235D81BB0037654B /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A90C253235D81BB0037654B /* Animations.swift */; };
+		1A90C256235D81D10037654B /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A90C255235D81D10037654B /* Animator.swift */; };
+		1A90C258235D82080037654B /* Extension+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A90C257235D82080037654B /* Extension+TableView.swift */; };
 		1AC57B84235C0BA9007C3AC5 /* Extension+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC57B83235C0BA9007C3AC5 /* Extension+Validation.swift */; };
 		1AC57B86235C3738007C3AC5 /* K+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC57B85235C3738007C3AC5 /* K+Notification.swift */; };
 		1AC57B88235C63B3007C3AC5 /* Extension+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC57B87235C63B3007C3AC5 /* Extension+Animation.swift */; };
@@ -91,6 +95,10 @@
 		1A89B3CF2355BA290001C7E5 /* AnalyzeLeakAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeLeakAction.swift; sourceTree = "<group>"; };
 		1A89B3D02355BA290001C7E5 /* Expectation+Leaks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Expectation+Leaks.swift"; sourceTree = "<group>"; };
 		1A89B3DB2355CC1F0001C7E5 /* Extension+RX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+RX.swift"; sourceTree = "<group>"; };
+		1A90C250235D7F500037654B /* OperationEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationEnum.swift; sourceTree = "<group>"; };
+		1A90C253235D81BB0037654B /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
+		1A90C255235D81D10037654B /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		1A90C257235D82080037654B /* Extension+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+TableView.swift"; sourceTree = "<group>"; };
 		1AC57B83235C0BA9007C3AC5 /* Extension+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Validation.swift"; sourceTree = "<group>"; };
 		1AC57B85235C3738007C3AC5 /* K+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "K+Notification.swift"; sourceTree = "<group>"; };
 		1AC57B87235C63B3007C3AC5 /* Extension+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Animation.swift"; sourceTree = "<group>"; };
@@ -234,6 +242,15 @@
 			path = SpeckLeaks;
 			sourceTree = "<group>";
 		};
+		1A90C252235D81AC0037654B /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				1A90C253235D81BB0037654B /* Animations.swift */,
+				1A90C255235D81D10037654B /* Animator.swift */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
 		1ADC8510234C58650019AC62 = {
 			isa = PBXGroup;
 			children = (
@@ -270,6 +287,7 @@
 		1ADC854C234C985A0019AC62 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				1A90C252235D81AC0037654B /* Animation */,
 				1A59A1ED235B7D1600894757 /* Validation */,
 				1ADC8594234F5E390019AC62 /* MockData */,
 				1ADC856F234DC5B80019AC62 /* Support */,
@@ -370,6 +388,7 @@
 				1A89B3DB2355CC1F0001C7E5 /* Extension+RX.swift */,
 				1AC57B83235C0BA9007C3AC5 /* Extension+Validation.swift */,
 				1AC57B87235C63B3007C3AC5 /* Extension+Animation.swift */,
+				1A90C257235D82080037654B /* Extension+TableView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -381,6 +400,7 @@
 				1ADC8567234D9FFC0019AC62 /* K+Url.swift */,
 				1AE382C8235AC694000F8124 /* K+Color.swift */,
 				1AC57B85235C3738007C3AC5 /* K+Notification.swift */,
+				1A90C250235D7F500037654B /* OperationEnum.swift */,
 			);
 			path = Constant;
 			sourceTree = "<group>";
@@ -631,7 +651,9 @@
 				1ADC8574234DC5EB0019AC62 /* ContactTableViewCell.swift in Sources */,
 				1ADC8553234D9A2D0019AC62 /* Coordinator.swift in Sources */,
 				1ADC859A234F608F0019AC62 /* MockJsonFile.swift in Sources */,
+				1A90C254235D81BB0037654B /* Animations.swift in Sources */,
 				1ADC8560234D9D2C0019AC62 /* ContactsVC.swift in Sources */,
+				1A90C258235D82080037654B /* Extension+TableView.swift in Sources */,
 				1A463D5A235B6C7500095764 /* ContactEditCreateViewModel.swift in Sources */,
 				1ADC8557234D9C150019AC62 /* BaseCoordinator.swift in Sources */,
 				1ADC857B234DCD800019AC62 /* ContactDetailViewModel.swift in Sources */,
@@ -648,9 +670,11 @@
 				1ADC8579234DCAF80019AC62 /* Extension+Cell.swift in Sources */,
 				1ADC851D234C58650019AC62 /* AppDelegate.swift in Sources */,
 				1AE382C9235AC694000F8124 /* K+Color.swift in Sources */,
+				1A90C256235D81D10037654B /* Animator.swift in Sources */,
 				1ADC857D234DCE2F0019AC62 /* ContactDetailVC.swift in Sources */,
 				1ADC856E234DBD8D0019AC62 /* ContactsViewModel.swift in Sources */,
 				1ADC8568234D9FFC0019AC62 /* K+Url.swift in Sources */,
+				1A90C251235D7F500037654B /* OperationEnum.swift in Sources */,
 				1A59A1EF235B7D2500894757 /* ValidationViewModel.swift in Sources */,
 				1A59A1F1235B7E8000894757 /* EmailValidationViewModel.swift in Sources */,
 				1ADC856A234DA13C0019AC62 /* ContactService.swift in Sources */,

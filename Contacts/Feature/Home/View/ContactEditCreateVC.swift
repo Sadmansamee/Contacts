@@ -144,7 +144,7 @@ class ContactEditCreateVC: UITableViewController, HomeStoryboardLoadable, Contac
             .disposed(by: disposeBag)
 
         viewModel.isValidAll
-            .debounce(DispatchTimeInterval.milliseconds(1400), scheduler: MainScheduler.instance)
+            .debounce(DispatchTimeInterval.milliseconds(800), scheduler: MainScheduler.instance)
             .map { [weak self] in
                 guard let self = self else {
                     return
