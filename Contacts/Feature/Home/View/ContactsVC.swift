@@ -183,6 +183,8 @@ extension ContactsVC {
                     animation = AnimationFactory.makeFade(duration: 0.8, delayFactor: 0.50)
                 }
 
+                self.tableView.scrollToRow(at: operatedCell.0, at: .middle, animated: true)
+
                 let animator = Animator(animation: animation)
                 if let cell = self.tableView.cellForRow(at: operatedCell.0) {
                     animator.animate(cell: cell, at: operatedCell.0, in: self.tableView)
@@ -240,14 +242,6 @@ extension ContactsVC {
         viewModel.onContactViewModels
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
-
-//                viewModel.contactViewModels.bind(to: tableView.rx.items) { tableView, _, element in
-//                    guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id) as? ContactTableViewCell else {
-//                        return UITableViewCell()
-//                    }
-//                    cell.viewModel = element
-//                    return cell
-//                }.disposed(by: disposeBag)
 
         // setting delegate
         tableView.rx.setDelegate(self)

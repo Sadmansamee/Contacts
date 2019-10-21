@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appCoordinator.start()
 
         window?.makeKeyAndVisible()
-        // IQKeyboardManager.shared().isEnabled = true
+        IQKeyboardManager.shared().isEnabled = true
 
         return true
     }

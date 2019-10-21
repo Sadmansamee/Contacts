@@ -39,7 +39,6 @@ class ContactDetailVC: UITableViewController, HomeStoryboardLoadable, ContactDet
     private var loadingView: UIActivityIndicatorView!
     private var contactViewModel: ContactViewModel! {
         didSet {
-            
             imageViewProfile.kf.setImage(with: URL(string: contactViewModel.profilePicUrl), placeholder: #imageLiteral(resourceName: "placeholder_photo"))
             labelName.text = contactViewModel.name
 
