@@ -28,7 +28,6 @@ class ContactsViewModelTest: QuickSpec {
             beforeEach {
                 stubbingProvider = MoyaProvider<ContactService>(stubClosure: MoyaProvider.immediatelyStub)
                 sut = ContactsViewModel(contactProvider: stubbingProvider)
-                // sut.fetchContacts()
             }
             context("when initialized and data count okhay") {
                 it("should load all the Contactss") {
